@@ -16,6 +16,22 @@ $cpassword="";
 $image_name='';
 $user_status=1;
 
+$user_date_of_birth="";
+$user_birth_place="";
+$user_phn_no="";
+$user_address="";
+$user_position="";
+$user_department="";
+$user_branch="";
+$user_passport_no="";
+$user_passport_exp_date="";
+$user_civil_id_no="";
+$user_civil_id_expiry_date="";
+$user_ikma_no="";
+$user_ikma_expiry_date="";
+$user_vacation_total="";
+$user_vacation_taken="";
+
 $err=0;
 
 $messages = array(
@@ -102,7 +118,7 @@ if(isset($_POST['Submit'])){
 		
 		if(!get_magic_quotes_gpc())
 		{
-			$user_description = addslashes($user_description);
+			$user_address = addslashes($user_address);
 		}
 		
 		$sql_user = "INSERT INTO ".$db_suffix."user SET 
@@ -117,12 +133,42 @@ if(isset($_POST['Submit'])){
 
 									user_email = '$user_email',
 
-									user_password = '$user_password_md5_old',
+									user_password = '".md5($user_password)."',
 									
 									user_photo  ='$image_name',	
 									
+									user_date_of_birth  ='$user_date_of_birth',	
+									
+									user_birth_place  ='$user_birth_place',	
+									
+									user_phn_no  ='$user_phn_no',	
+									
+									user_address  ='$user_address',	
+									
+									user_position  ='$user_position',	
+									
+									user_department  ='$user_department',	
+									
+									user_branch  ='$user_branch',	
+									
+									user_passport_no  ='$user_passport_no',	
+									
+									user_passport_exp_date  ='$user_passport_exp_date',	
+									
+									user_civil_id_no  ='$user_civil_id_no',	
+									
+									user_civil_id_expiry_date  ='$user_civil_id_expiry_date',	
+									
+									user_ikma_no  ='$user_ikma_no',	
+									
+									user_ikma_expiry_date  ='$user_ikma_expiry_date',	
+									
+									user_vacation_total  ='$user_vacation_total',	
+									
+									user_vacation_taken  ='$user_vacation_taken',	
+																		
 									user_status = '$user_status'";
-
+		
 		if(mysqli_query($db,$sql_user))
 		{										
 			if($_FILES["user_photo"]["name"]!='')
@@ -135,12 +181,24 @@ if(isset($_POST['Submit'])){
 			$user_last_name="";
 			$user_password="";
 			$cpassword="";
-			$user_description='';
+			$user_address='';
 			$image_name='';
-			$codes_org_name = "";
-			$codes_start_date = "";
-			$codes_end_date = "";
-			$voc_set_level = "";
+			
+			$user_date_of_birth="";
+			$user_birth_place="";
+			$user_phn_no="";
+			$user_address="";
+			$user_position="";
+			$user_department="";
+			$user_branch="";
+			$user_passport_no="";
+			$user_passport_exp_date="";
+			$user_civil_id_no="";
+			$user_civil_id_expiry_date="";
+			$user_ikma_no="";
+			$user_ikma_expiry_date="";
+			$user_vacation_total="";
+			$user_vacation_taken="";
 												 
 			$alert_box_show="show";
 			$alert_type="success";
@@ -242,36 +300,130 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                  		<span for="user_last_name" class="help-block"><?php echo $messages["user_last_name"]["msg"] ?></span>
                               		</div>
                            	  </div>
+
+							<div class="form-group">
+                                <label class="control-label col-md-3">Date of birth</label>
+                                <div class="col-md-4">
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="user_date_of_birth" type="text" class="form-control" value="<?php echo $user_date_of_birth; ?>" placeholder="YYYY-MM-DD">
+                                        <span class="input-group-btn">
+                                        	<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                               
-                              <div class="form-group <?php echo $messages["codes_org_name"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="codes_org_name">Organisation/school Name <span class="required">*</span></label>
+                              <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_birth_place">Place of birth</label>
                               		<div class="col-md-4">
-                                 		<input type="text" placeholder="" class="form-control" name="codes_org_name" value="<?php echo $codes_org_name;?>"/>
-                                 		<span for="codes_org_name" class="help-block">Make sure the school name of the students and their corresponding teachers are exactly the same and also the level.<br /><?php echo $messages["codes_org_name"]["msg"] ?></span>
+                                 		<input type="text" class="form-control" name="user_birth_place" value="<?php echo $user_birth_place;?>"/>
                               		</div>
                            	  </div>
-                              
-                              <div class="form-group <?php echo $messages["voc_set_level"]["status"] ?>">
-                                  <label for="voc_set_level" class="control-label col-md-3">  Batch Name / Level</label>
-                                  <div class="col-md-4">
-                                 		<input type="text" placeholder="e.g. A1/ Gruppe 1 - A1" class="form-control" name="voc_set_level" value="<?php echo $voc_set_level;?>"/>
-                                 		<span for="voc_set_level" class="help-block"><?php echo $messages["voc_set_level"]["msg"] ?></span>
-                              		</div>
-                              </div>
-                              
-                              <div class="form-group <?php echo $messages["user_email"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="user_email">User Email <span class="required">*</span></label>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_phn_no">Phone number</label>
                               		<div class="col-md-4">
-                                 		<input type="text" placeholder="" class="form-control" name="user_email" value="<?php echo $user_email;?>"/>
-                                 		<span for="user_email" class="help-block"><?php echo $messages["user_email"]["msg"] ?></span>
+                                 		<input type="text" class="form-control" name="user_phn_no" value="<?php echo $user_phn_no;?>"/>
                               		</div>
                            	  </div>
                               
                               <div class="form-group">
-                              		<label class="control-label col-md-3" for="user_description">User Description</label>
+                              		<label class="control-label col-md-3" for="user_address">User address</label>
                               		<div class="col-md-4">
-                                 		<textarea rows="4" class="form-control" name="user_description"><?php echo $user_description; ?></textarea>
-                                 		<span for="user_description" class="help-block"></span>
+                                 		<textarea rows="4" class="form-control" name="user_address"><?php echo $user_address; ?></textarea>
+                                 		<span for="user_address" class="help-block"></span>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_position">User position</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_position" value="<?php echo $user_position;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_department">Department</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_department" value="<?php echo $user_department;?>"/>
+                              		</div>
+                           	  </div>
+
+							  <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_branch">Branch</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_branch" value="<?php echo $user_branch;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_passport_no">Passport number</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_passport_no" value="<?php echo $user_passport_no;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                                <label class="control-label col-md-3">Passport expiry date</label>
+                                <div class="col-md-4">
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="user_passport_exp_date" type="text" class="form-control" value="<?php echo $user_passport_exp_date; ?>" placeholder="YYYY-MM-DD">
+                                        <span class="input-group-btn">
+                                        	<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_civil_id_no">Civil ID number</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_civil_id_no" value="<?php echo $user_civil_id_no;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                                <label class="control-label col-md-3">Civil ID expiry date</label>
+                                <div class="col-md-4">
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="user_civil_id_expiry_date" type="text" class="form-control" value="<?php echo $user_civil_id_expiry_date; ?>" placeholder="YYYY-MM-DD">
+                                        <span class="input-group-btn">
+                                        	<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_ikma_no">Ikma number</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_ikma_no" value="<?php echo $user_ikma_no;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                                <label class="control-label col-md-3">Ikma expiry date</label>
+                                <div class="col-md-4">
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="user_ikma_expiry_date" type="text" class="form-control" value="<?php echo $user_ikma_expiry_date; ?>" placeholder="YYYY-MM-DD">
+                                        <span class="input-group-btn">
+                                        	<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_vacation_total">Allowed vacation days</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_vacation_total" value="<?php echo $user_vacation_total;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group">
+                              		<label class="control-label col-md-3" for="user_vacation_taken">Spent vacation days</label>
+                              		<div class="col-md-4">
+                                 		<input type="text" class="form-control" name="user_vacation_taken" value="<?php echo $user_vacation_taken;?>"/>
                               		</div>
                            	  </div>
                               
@@ -327,7 +479,14 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                      </select>
                                   </div>
                               </div>
-                             
+
+							  <div class="form-group <?php echo $messages["user_email"]["status"] ?>">
+                              		<label class="control-label col-md-3" for="user_email">User Email <span class="required">*</span></label>
+                              		<div class="col-md-4">
+                                 		<input type="text" placeholder="" class="form-control" name="user_email" value="<?php echo $user_email;?>"/>
+                                 		<span for="user_email" class="help-block"><?php echo $messages["user_email"]["msg"] ?></span>
+                              		</div>
+                           	  </div>                            
                              
                               <div class="form-group <?php echo $messages["user_name"]["status"] ?>">
                               		<label class="control-label col-md-3" for="user_name">User Name <span class="required">*</span></label>
@@ -351,38 +510,8 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                  		<input type="password" placeholder="" class="form-control" name="cpassword" value="<?php echo $cpassword;?>"/>
                                  		<span for="cpassword" class="help-block"><?php echo $messages["cpassword"]["msg"] ?></span>
                               		</div>
-                           	  </div>
-                              
-                              <div class="form-group <?php echo $messages["codes_start_date"]["status"] ?>">
-                                <label class="control-label col-md-3">Start Date <span class="required">*</span></label>
-                                <div class="col-md-4">
-                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
-                                        <input name="codes_start_date" type="text" class="form-control" value="<?php echo $codes_start_date; ?>" readonly>
-                                        <span class="input-group-btn">
-                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-                                        </span>
-                                    </div>
-                                    <!-- /input-group -->
-                                    <span class="help-block">
-                                    Date when the user is valid from<br /><?php echo $messages["codes_start_date"]["msg"] ?></span>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group <?php echo $messages["codes_end_date"]["status"] ?>">
-                                <label class="control-label col-md-3">End Date <span class="required">*</span></label>
-                                <div class="col-md-4">
-                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
-                                        <input name="codes_end_date" type="text" class="form-control" value="<?php echo $codes_end_date; ?>" readonly>
-                                        <span class="input-group-btn">
-                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-                                        </span>
-                                    </div>
-                                    <!-- /input-group -->
-                                    <span class="help-block">
-                                    Date till the user is valid<br /><?php echo $messages["codes_end_date"]["msg"] ?></span>
-                                </div>
-                            </div>
-                              
+                           	  </div> 
+
                               <div class="form-group">
                                   <label for="user_status" class="control-label col-md-3">Status</label>
                                   <div class="col-md-2">

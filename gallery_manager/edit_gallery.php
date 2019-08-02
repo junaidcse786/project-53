@@ -12,6 +12,18 @@ if(mysqli_num_rows($query) > 0)
 	$image_name    = $content->gallery_file;
 	$size = $content->gallery_size;
 	$type = $content->gallery_type;
+	$user_id = $content->user_id;
+}
+
+$sql = "select * from ".$db_suffix."user where user_id = '$user_id' limit 1";				
+$query = mysqli_query($db, $sql);
+
+if(mysqli_num_rows($query) > 0){
+        $usr = mysqli_fetch_object($query);
+        $user_folder = $usr->user_first_name.'-'.$usr->user_last_name.'-'.$usr->user_id;
+
+        if (!file_exists("data/FILES/".$user_folder))
+                mkdir("data/FILES/".$user_folder, 0700);
 }
 
 	
@@ -45,7 +57,8 @@ if(isset($_POST['Submit']))
 	
 	if($err == 0)
 	{
-		$image_dir = "data/FILES/";
+		$image_dir = "data/FILES/".$user_folder."/";
+
 		if($_FILES['gallery_file']['name'] != '')
 			{
 				$type=$_FILES['gallery_file']['type'];
@@ -113,16 +126,12 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <i class="<?php echo $active_module_icon; ?>"></i>
-                                                        <a href="#"><?php echo $active_module_name; ?></a>
+                                                        <i class="fa fa-table"></i>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager</a>
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist'; ?>">Files List</a>
-														<i class="fa fa-angle-right"></i>
-                                                </li>
-												<li>
-                                                        <a  href="#">Update Content ID: <?php echo $id; ?></a>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=addgallery&user_id='.$user_id; ?>">Upload file</a>
                                                 </li>
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -182,7 +191,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 										<div class="col-md-9">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail" style="width: 200px; ">
-													<a target="_blank" href="<?php echo SITE_URL.'data/FILES/'.$image_name; ?>"><img src="<?php echo SITE_URL.'data/FILES/'.$image_name; ?>" alt=""/></a>
+													<a target="_blank" href="<?php echo SITE_URL.'data/FILES/'.$user_folder.'/'.$image_name; ?>"><img src="<?php echo SITE_URL.'data/FILES/'.$user_folder.'/'.$image_name; ?>" alt=""/></a>
 												</div>
 											</div>
 										</div>

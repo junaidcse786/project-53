@@ -1,6 +1,16 @@
 <?php 
+
+$user_id = $_GET["user_id"];
+
+$sql = "select * from ".$db_suffix."user where user_id = '$user_id' limit 1";				
+$query = mysqli_query($db, $sql);
+
+if(mysqli_num_rows($query) > 0){
+        $usr = mysqli_fetch_object($query);
+        $user_folder = $usr->user_first_name.'-'.$usr->user_last_name.'-'.$usr->user_id."/";
+}
 	
-$sql = "SELECT * FROM ".$db_suffix."gallery";
+$sql = "SELECT * FROM ".$db_suffix."gallery WHERE user_id='$user_id'";
 $news_query = mysqli_query($db,$sql);
 
 ?>
@@ -27,13 +37,10 @@ $news_query = mysqli_query($db,$sql);
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <i class="<?php echo $active_module_icon; ?>"></i>
-                                                        <a href="#"><?php echo $active_module_name; ?></a>
+                                                        <i class="fa fa-table"></i>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager</a>
                                                         <i class="fa fa-angle-right"></i>
-                                                </li>
-                                                <li>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey='.$pKey; ?>"><?php echo $menus["$mKey"]["$pKey"]; ?></a>
-                                                </li>
+                                                </li>                                              
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
                                 </div>
@@ -52,7 +59,7 @@ $news_query = mysqli_query($db,$sql);
                   <div class="portlet-title">
                      <div class="caption"><i class="fa fa-table"></i>Files</div>
                      <div class="actions">
-                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey=addgallery'; ?>" class="btn blue"><i class="fa fa-plus"></i> Upload new file</a>
+                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=addgallery&user_id='.$user_id; ?>" class="btn blue"><i class="fa fa-plus"></i> Upload new file</a>
                         <div class="btn-group">
                            <a class="btn green" href="#" data-toggle="dropdown">
                            <i class="fa fa-cogs"></i> Actions
@@ -91,7 +98,7 @@ $news_query = mysqli_query($db,$sql);
 							  
 							  //if(strpos($row->gallery_type,'image')!== false) 
 							  
-							  		echo '<a href="'.SITE_URL.'data/FILES/'.$row->gallery_file.'" target="_blank"><img src="'.SITE_URL.'data/FILES/'.$row->gallery_file.'" width="100" height="100"></a>';
+							  		echo '<a href="'.SITE_URL.'data/FILES/'.$user_folder.$row->gallery_file.'" target="_blank"><img src="'.SITE_URL.'data/FILES/'.$user_folder.$row->gallery_file.'" width="100" height="100"></a>';
 							  // else
 							   
 							   		//echo 'Preview not Available'; 
@@ -99,7 +106,7 @@ $news_query = mysqli_query($db,$sql);
 									
 							  ?></td>
                               
-                              <td><input class="form-control" rel="gp" type="text" value="<?php echo SITE_URL.'data/FILES/'.$row->gallery_file; ?>"></td>
+                              <td><input class="form-control" rel="gp" type="text" value="<?php echo SITE_URL.'data/FILES/'.$user_folder.$row->gallery_file; ?>"></td>
                               
                               <!--<td>
                               

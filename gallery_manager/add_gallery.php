@@ -6,6 +6,19 @@ $err_easy="has-error";
 
 $gallery_title = "";
 
+$user_id = $_GET["user_id"];
+
+$sql = "select * from ".$db_suffix."user where user_id = '$user_id' limit 1";				
+$query = mysqli_query($db, $sql);
+
+if(mysqli_num_rows($query) > 0){
+        $usr = mysqli_fetch_object($query);
+        $user_folder = $usr->user_first_name.'-'.$usr->user_last_name.'-'.$usr->user_id;
+
+        if (!file_exists("data/FILES/".$user_folder))
+                mkdir("data/FILES/".$user_folder, 0700);
+}
+
 $err=0;
 
 $messages = array(
@@ -34,7 +47,7 @@ if(isset($_POST['Submit']))
         
         if($err == 0)
 	{
-		$image_dir = "data/FILES/";
+		$image_dir = "data/FILES/".$user_folder."/";
                 
                 for($i=0; $i<count($_FILES['gallery_file']['name']); $i++) {
                 
@@ -44,7 +57,7 @@ if(isset($_POST['Submit']))
 				$size=$_FILES['gallery_file']['size'][$i];
 				$image_name=date('ymdgis').$_FILES['gallery_file']['name'][$i];
 			}
-                $sql = "INSERT INTO ".$db_suffix."gallery SET gallery_title='$image_name', gallery_file='$image_name', gallery_type='$type', gallery_size='$size'";
+                $sql = "INSERT INTO ".$db_suffix."gallery SET gallery_title='$image_name', gallery_file='$image_name', gallery_type='$type', gallery_size='$size', user_id='".$user_id."'";
 		mysqli_query($db,$sql);
                 
                 move_uploaded_file($_FILES['gallery_file']['tmp_name'][$i], $image_dir.$image_name);
@@ -102,12 +115,12 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <i class="<?php echo $active_module_icon; ?>"></i>
-                                                        <a href="#"><?php echo $active_module_name; ?></a>
+                                                        <i class="fa fa-table"></i>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager</a>
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey='.$pKey; ?>"><?php echo $menus["$mKey"]["$pKey"]; ?></a>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=addgallery&user_id='.$user_id; ?>">Upload file</a>
                                                 </li>
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -138,13 +151,13 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                
                                
                                                          
-<!--                               <div class="form-group <?php echo $messages["gallery_title"]["status"] ?>">
+                              <div class="form-group <?php echo $messages["gallery_title"]["status"] ?> hide">
                               		<label class="control-label col-md-3" for="gallery_title">File Title <span class="required">*</span></label>
                               		<div class="col-md-4">
                                  		<input type="text" placeholder="" class="form-control" name="gallery_title" value="<?php echo $gallery_title;?>"/>
                                  		<span for="gallery_title" class="help-block"><?php echo $messages["gallery_title"]["msg"] ?></span>
                               		</div>
-                           	  </div>-->
+                           	  </div>
                               
                               <div class="form-group <?php echo $messages["gallery_file"]["status"] ?>">
 										<label class="control-label col-md-3">File Upload <span class="required">*</span></label>
@@ -239,6 +252,6 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 if($alert_type=='success' && isset($_POST["Submit"]))
 {
 	//usleep(3000000);
-	echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
+	// echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
 }
 ?>

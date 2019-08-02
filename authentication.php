@@ -13,7 +13,7 @@
 		
 		if($_SESSION["role_id"]=='8')
 			
-			array_push($modules_keys, "setup", "member");	// push this module only for super admin		
+			array_push($modules_keys, "setup", "member", "gallery");	// push this module only for super admin		
 			
 		if($mKey!='' && !in_array($mKey, $modules_keys))
 	

@@ -27,7 +27,6 @@ if(mysqli_num_rows($query) > 0)
 	$cpassword= "";
 	$alt_password= "";
 	$user_status= $usr->user_status;
-	$user_description= $usr->user_description;
 	$image_old_name=$usr->user_photo;
 	$image_name=$image_old_name;
 }
@@ -111,7 +110,7 @@ if(isset($_POST['Submit'])){
 
 		if(mysqli_num_rows($dd)>0){
 		
-			if($user_password!=$cpassword){
+			if($user_password!=$cpassword || empty($user_password) || empty($cpassword)){
         		$messages["user_password"]["status"]=$err_easy;
         		$messages["cpassword"]["status"]=$err_easy;
         		$messages["cpassword"]["msg"]="Passwords do not match";
@@ -135,12 +134,7 @@ if(isset($_POST['Submit'])){
 		}
 		else
 			
-			$image_name=$image_old_name;
-		
-		if(!get_magic_quotes_gpc())
-		{
-			$user_description = addslashes($user_description);
-		}
+			$image_name=$image_old_name;		
 		
 		$sql_user = "UPDATE ".$db_suffix."user SET 
 		
@@ -156,11 +150,7 @@ if(isset($_POST['Submit'])){
 
 									user_password = '$user_password_md5_old',
 									
-									user_photo  ='$image_name',		
-
-									user_description ='$user_description', 
-									
-									user_status = '$user_status'
+									user_photo  ='$image_name'									
 									
 									WHERE user_id = $user_id";
 
@@ -177,7 +167,7 @@ if(isset($_POST['Submit'])){
 				}
 			$alert_box_show="show";
 			$alert_type="success";
-			$alert_message="Info saved successfullu";
+			$alert_message="Info saved successfully";
 				
 		}else{
 			$alert_box_show="show";
@@ -268,15 +258,7 @@ if(isset($_POST['Submit'])){
                                  		<input type="text" placeholder="" class="form-control" name="user_email" value="<?php echo $user_email;?>"/>
                                  		<span for="user_email" class="help-block"><?php echo $messages["user_email"]["msg"] ?></span>
                               		</div>
-                           	  </div>
-                              
-                              <!--<div class="form-group">
-                              		<label class="control-label col-md-3" for="user_description">User Description</label>
-                              		<div class="col-md-4">
-                                 		<textarea rows="4" class="form-control" name="user_description"><?php echo $user_description; ?></textarea>
-                                 		<span for="user_description" class="help-block"></span>
-                              		</div>
-                           	  </div>-->
+                           	  </div>                              
                               
                               <?php if($image_name!='' && is_file("data/user/".$image_name))
 							  

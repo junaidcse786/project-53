@@ -51,7 +51,7 @@ $user_query = mysqli_query($db,$user_sql);
                <!-- BEGIN EXAMPLE TABLE PORTLET-->
                <div class="portlet box grey-cascade">
                   <div class="portlet-title">
-                     <div class="caption"><i class="fa fa-table"></i>Members</div>
+                     <div class="caption"><i class="fa fa-table"></i>Employees</div>
                      <div class="actions">
                         <a href="<?php echo '?mKey='.$mKey.'&pKey=addmember&roll_id='.$role_id.'';?>" class="btn blue"><i class="fa fa-plus"></i> Add new member</a>
                         <div class="btn-group">
@@ -63,8 +63,6 @@ $user_query = mysqli_query($db,$user_sql);
                               <li><a href="#" data-toggle="modal" data-target="#confirmation_all"><i class="fa fa-trash"></i> Delete</a></li>
                               <li><a href="#" data-toggle="modal" data-status="1" data-target="#confirmation_status"><i class="fa fa-flag"></i> Change status to Active</a></li>
                               <li><a href="#" data-toggle="modal" data-status="0" data-target="#confirmation_status"><i class="fa fa-flag-o"></i> Change status to InActive</a></li>
-                              <li><a href="#" data-toggle="modal" data-status="1" data-target="#charge_status"><i class="fa fa-thumbs-o-up"></i> Change status to chargeable</a></li>
-                              <li><a href="#" data-toggle="modal" data-status="0" data-target="#charge_status"><i class="fa fa-thumbs-o-down"></i> Change status to non-chargeable</a></li>
                               
                            </ul>
                         </div>
@@ -77,17 +75,12 @@ $user_query = mysqli_query($db,$user_sql);
                               <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /></th>
                               <th>Name</th>
                               <th >Email</th>
-                              <th >Reg. time</th>
-                              <th >Start Date</th>
-                              <th >End Date</th>
-                              <th >Org. Name</th>
-                              <th >Batch</th>
-                              <th >Status</th>
-                              <?php if($role_id==16){ ?>
-                              <th >Charge?</th>
-                              <?php } ?>
-                              <!--<th >&nbsp;</th>-->
-                              <!--<th >&nbsp;</th>         -->                     
+                              <th >Date of birth</th>
+                              <th >Position</th>
+                              <th >Department</th>
+                              <th >Branch</th>
+                              <th >Created at</th>
+                              <th >Status</th>                            
                            </tr>
                         </thead>
                         <tbody>
@@ -103,53 +96,27 @@ $user_query = mysqli_query($db,$user_sql);
                               <td><a href="<?php echo '?mKey='.$mKey.'&pKey=editmember&id='.$row->user_id;?>"><?php echo $row->user_first_name." ".$row->user_last_name; ?></a></td>
                               
                               <td><?php echo $row->user_email; ?></td>
+
+                              <td><?php echo $row->user_date_of_birth; ?></td>
+
+                              <td><?php echo $row->user_position; ?></td>
+
+                              <td><?php echo $row->user_department; ?></td>
+
+                              <td><?php echo $row->user_branch; ?></td>
                               
                               <td><?php echo date('d-m-Y h:i A',strtotime($row->user_creation_date ));?></td>
-                              <td><?php echo date('d-m-Y',strtotime($row->user_validity_start ));?></td>
-                              <td><?php echo date('d-m-Y',strtotime($row->user_validity_end ));?></td>
-                              <td><?php echo $row->user_org_name; ?></td>
-                              
-                              <td><?php echo $row->user_level; ?></td>
-                              
+
                               <td>
-							  <?php if($row->user_status==1)
-							  
-											echo '<span class="label label-md label-success">Active</span>'; 
-									else if($row->user_status==0)
-									
-											echo '<span class="label label-md label-warning">InActive</span>';
-									else if($row->user_status==2)
-									
-											echo '<span class="label label-md label-danger">InActive</span>';
-									
-									?>
+                                 <?php if($row->user_status==1)
+                                 
+                                          echo '<span class="label label-md label-success">Active</span>'; 
+                                          else if($row->user_status==0)
+                                    
+                                          echo '<span class="label label-md label-warning">InActive</span>';									
+                                    ?>
                               </td>
-                              
-                              
-							  <?php 
-							  
-							  if($role_id==16){
-							  
-							  		echo '<td>';
-									
-									if($row->user_charge==1)
-							  
-											echo '<span class="label label-md label-success">Yes</span>'; 
-									else if($row->user_charge==0)
-									
-											echo '<span class="label label-md label-warning">No</span>';
-									echo '</td>';		
-							  }
-							  ?>
-                              
-                              <!--<td><a href="<?php echo '?mKey=setup&pKey=sendmessage&parent='.$row->user_id;?>" class="btn default btn-xs green"><i class="fa fa-envelope-square"></i> Send Message</a></td>-->
-                              
-                              <!--<td>
-                              
-                              <a href="<?php echo '?mKey='.$mKey.'&pKey=editmember&id='.$row->user_id;?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Edit</a>
-                              
-                              <a data-href="<?php echo SITE_URL_ADMIN; ?>member_manager/delete.php?id=<?php echo $row->user_id;?>" data-toggle="modal" href="#" data-target="#confirmation" class="btn default btn-xs red delete"><i class="fa fa-trash"></i> Delete</a>
-                              </td>   -->                            
+
                            </tr>
                            
           <?php } ?>       
@@ -205,26 +172,6 @@ $user_query = mysqli_query($db,$user_sql);
             </div>
             <!-- /.modal-dialog -->
          </div>
-         
-         <div class="modal fade" id="charge_status">
-            <div class="modal-dialog">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                     <h4 class="modal-title">Status Change Confirmation</h4>
-                  </div>
-                  <div class="modal-body">
-                        <span class="font-red-thunderbird"><strong>Warning !</strong></span> Are you sure you want to change the status of this(these) record(s)?         			</div>
-                  <div class="modal-footer">
-                     <button id="delete_button" type="button" class="btn red-thunderbird">Change</button>
-                     <button type="button" class="btn default" data-dismiss="modal">Close</button>
-                  </div>
-               </div>
-               <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-         </div>
-                        <!-- /.modal -->
 
 <!-----MODALS FOR THIS PAGE END ---->
   
@@ -320,39 +267,6 @@ $user_query = mysqli_query($db,$user_sql);
 						 
 						id=id+$(this).val()+',';
 					 })
-					 
-						$.ajax({
-							   type: "POST",
-							   url:  '<?php echo SITE_URL_ADMIN.'content_manager/change_status.php' ; ?>',
-							   dataType: "text",
-							   data: {id: id, status: status, table_name:table_name, column_name:column_name, column_id:column_id},
-							   success: function(data){		
-									window.location.reload(true);
-							   }								   		   		
-						  });
-					});
-				});
-				
-				$('#charge_status').on('show.bs.modal', function(e) {
-					
-					 var status=$(e.relatedTarget).data('status');
-					 
-					 $(this).find('#delete_button').on('click', function(e) { 
-					 
-					 var id='';
-					 
-					 var table_name='user';
-					 
-					 var column_name='user_charge';
-					 
-					 var column_id='user_id';
-					 
-					 $('input:checkbox[class=checkboxes]:checked').each(function(){
-						 
-						id=id+$(this).val()+',';
-					 })
-					 
-					 alert(id);
 					 
 						$.ajax({
 							   type: "POST",
