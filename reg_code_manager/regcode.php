@@ -86,10 +86,11 @@ else
                            <tr>
                               <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /></th>
                               <th>Title</th>
-                              <th>Description</th>
+                              <!-- <th>Description</th> -->
                               <th>Assigned to</th>
                               <th>Deadline</th>
                               <th>State</th>
+                              <th>Started</th>
                               <th>Completed</th>
                               <th>Created</th>
                               <th>Status</th>                            
@@ -107,7 +108,7 @@ else
                               <td><input type="checkbox" class="checkboxes" value="<?php echo $row->task_id;?>" /></td>
                               <td><a href="<?php echo '?mKey='.$mKey.'&pKey=editregcode&id='.$row->task_id;?>"><?php echo $row->task_title; ?></a></td>
                               
-                              <td><?php echo substr(strip_tags($row->task_desc),0,30);?></td>
+                              <!-- <td><?php echo substr(strip_tags($row->task_desc),0,30);?></td> -->
 
                               <td><?php 
                               
@@ -125,6 +126,8 @@ else
                               
                               ?></td>
 
+                              <td><?php echo $row->task_start_date; ?></td>
+                              
                               <td><?php echo $row->task_end_date; ?></td>
 
                               <td><?php echo $row->task_created_time; ?></td>

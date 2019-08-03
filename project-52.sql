@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2019 at 03:53 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Aug 03, 2019 at 12:39 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.1.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -42,13 +42,14 @@ CREATE TABLE `ecom_config` (
 --
 
 INSERT INTO `ecom_config` (`config_id`, `config_name`, `config_value`, `config_note`, `config_is_json`, `config_base_currency`) VALUES
-(1, 'SITE_NAME', 'Project 51', 'Site Name ', 0, NULL),
+(1, 'SITE_NAME', 'Project 52', 'Site Name ', 0, NULL),
 (2, 'SITE_URL', 'http://localhost/project-52/', 'Site url', 0, NULL),
 (3, 'DB_SUFFIX', 'ecom_', 'ecom_', 1, NULL),
 (7, 'SITE_EMAIL', 'info@mblearning.de', 'site email', 0, NULL),
 (23, 'PER_PAGE_MSG', '50', 'Messages shown per page', 0, NULL),
 (20, 'FOOTER_TEXT', 'Â© 2016. Project 51. All Rights Reserved', 'FOOTER_TEXT', 0, NULL),
-(22, 'SITE_URL_ADMIN', 'http://localhost/project-52/', 'URL FOR ADMIN PANEL', 0, NULL);
+(22, 'SITE_URL_ADMIN', 'http://localhost/project-52/', 'URL FOR ADMIN PANEL', 0, NULL),
+(28, 'EMP_ROLE_ID', '15', 'Employee role id', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE `ecom_draft_message` (
   `message_subject` text NOT NULL,
   `message_receiver` text NOT NULL,
   `user_id` int(255) NOT NULL,
-  `dm_created_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `dm_created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dm_key` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -131,7 +132,7 @@ CREATE TABLE `ecom_gallery` (
   `gallery_id` int(255) NOT NULL,
   `gallery_title` varchar(500) NOT NULL,
   `gallery_file` varchar(500) NOT NULL,
-  `gallery_uploaded_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `gallery_uploaded_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `gallery_type` varchar(500) NOT NULL,
   `gallery_size` int(255) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -167,7 +168,7 @@ CREATE TABLE `ecom_message` (
   `message_receiver` int(255) NOT NULL,
   `message_seen` int(1) NOT NULL,
   `message_report` int(1) NOT NULL,
-  `message_created_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `message_created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `message_text` longtext NOT NULL,
   `message_subject` varchar(500) NOT NULL,
   `sender_delete` int(1) NOT NULL,
@@ -332,9 +333,8 @@ CREATE TABLE `ecom_module` (
 --
 
 INSERT INTO `ecom_module` (`module_id`, `module_name`, `module_title`, `module_key`, `module_image`, `module_priority`, `module_status`, `module_menu`) VALUES
-(1, 'General', 'General Module', 'general', 'fa fa-foursquare', 1, 0, 1),
 (18, 'Member', 'Member', 'member', 'fa fa-user-md', 98, 1, 1),
-(41, 'File Manager', 'File Manager', 'gallery', 'fa fa-file-image-o', 9, 1, 1);
+(48, 'Task Manager', 'Create tasks for employees', 'regcode', 'fa fa-tasks', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -355,8 +355,7 @@ CREATE TABLE `ecom_module_in_role` (
 
 INSERT INTO `ecom_module_in_role` (`module_in_role_id`, `role_id`, `module_id`, `module_in_role_status`) VALUES
 (186, 8, 18, 1),
-(185, 8, 1, 1),
-(184, 8, 41, 1);
+(197, 8, 48, 0);
 
 -- --------------------------------------------------------
 
@@ -391,10 +390,19 @@ CREATE TABLE `ecom_task` (
   `task_desc` text NOT NULL,
   `task_start_date` datetime NOT NULL,
   `task_deadline` datetime NOT NULL,
-  `task_status` enum('not_started','started','complete','') NOT NULL,
+  `task_state` enum('not_started','started','complete','') NOT NULL DEFAULT 'not_started',
   `task_end_date` datetime NOT NULL,
-  `task_created_time` timestamp NOT NULL DEFAULT current_timestamp()
+  `task_created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `task_status` int(1) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ecom_task`
+--
+
+INSERT INTO `ecom_task` (`task_id`, `task_title`, `task_desc`, `task_start_date`, `task_deadline`, `task_state`, `task_end_date`, `task_created_time`, `task_status`, `user_id`) VALUES
+(5, 'First Task', '<p>asdf</p>\r\n', '0000-00-00 00:00:00', '2019-08-07 00:00:00', 'not_started', '0000-00-00 00:00:00', '2019-08-03 10:06:54', 1, 1135);
 
 -- --------------------------------------------------------
 
@@ -411,8 +419,7 @@ CREATE TABLE `ecom_user` (
   `user_email` varchar(100) NOT NULL,
   `user_password` varchar(100) NOT NULL,
   `user_photo` varchar(600) NOT NULL,
-  `user_description` text NOT NULL,
-  `user_creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_status` int(2) NOT NULL,
   `user_date_of_birth` date NOT NULL,
   `user_birth_place` varchar(300) NOT NULL,
@@ -435,8 +442,9 @@ CREATE TABLE `ecom_user` (
 -- Dumping data for table `ecom_user`
 --
 
-INSERT INTO `ecom_user` (`user_id`, `role_id`, `user_first_name`, `user_last_name`, `user_name`, `user_email`, `user_password`, `user_photo`, `user_description`, `user_creation_date`, `user_status`, `user_date_of_birth`, `user_birth_place`, `user_phn_no`, `user_address`, `user_position`, `user_department`, `user_branch`, `user_passport_no`, `user_passport_exp_date`, `user_civil_id_no`, `user_civil_id_expiry_date`, `user_ikma_no`, `user_ikma_expiry_date`, `user_vacation_total`, `user_vacation_taken`) VALUES
-(1, 8, 'Super', 'Administrator', 'admin', 'admin@admin.com', 'e10adc3949ba59abbe56e057f20f883e', '15101915033icontexto_emoticons_05.png', '', '2015-08-07 21:31:29', 1, '0000-00-00', '', '', '', '', '', '', '', '0000-00-00', '', '0000-00-00', '', '0000-00-00', 0, 0);
+INSERT INTO `ecom_user` (`user_id`, `role_id`, `user_first_name`, `user_last_name`, `user_name`, `user_email`, `user_password`, `user_photo`, `user_creation_date`, `user_status`, `user_date_of_birth`, `user_birth_place`, `user_phn_no`, `user_address`, `user_position`, `user_department`, `user_branch`, `user_passport_no`, `user_passport_exp_date`, `user_civil_id_no`, `user_civil_id_expiry_date`, `user_ikma_no`, `user_ikma_expiry_date`, `user_vacation_total`, `user_vacation_taken`) VALUES
+(1, 8, 'Super', 'Administrator', 'admin', 'admin@admin.com', 'e10adc3949ba59abbe56e057f20f883e', '15101915033icontexto_emoticons_05.png', '2015-08-07 21:31:29', 1, '0000-00-00', '', '', '', '', '', '', '', '0000-00-00', '', '0000-00-00', '', '0000-00-00', 0, 0),
+(1135, 15, 'Muhammad', 'Junaid', 'm.junaid@swiss-marketing-systems.com', 'junaidcse786@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '', '2019-08-03 06:28:21', 1, '0000-00-00', '', '01708916758', 'Flachsbleiche 114', '', '', '', '', '0000-00-00', '', '0000-00-00', '', '0000-00-00', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -504,7 +512,7 @@ ALTER TABLE `ecom_user`
 -- AUTO_INCREMENT for table `ecom_config`
 --
 ALTER TABLE `ecom_config`
-  MODIFY `config_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `config_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `ecom_draft_message`
@@ -516,7 +524,7 @@ ALTER TABLE `ecom_draft_message`
 -- AUTO_INCREMENT for table `ecom_gallery`
 --
 ALTER TABLE `ecom_gallery`
-  MODIFY `gallery_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
+  MODIFY `gallery_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ecom_message`
@@ -528,13 +536,13 @@ ALTER TABLE `ecom_message`
 -- AUTO_INCREMENT for table `ecom_module`
 --
 ALTER TABLE `ecom_module`
-  MODIFY `module_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `module_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `ecom_module_in_role`
 --
 ALTER TABLE `ecom_module_in_role`
-  MODIFY `module_in_role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
+  MODIFY `module_in_role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
 
 --
 -- AUTO_INCREMENT for table `ecom_role`
@@ -546,13 +554,13 @@ ALTER TABLE `ecom_role`
 -- AUTO_INCREMENT for table `ecom_task`
 --
 ALTER TABLE `ecom_task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `ecom_user`
 --
 ALTER TABLE `ecom_user`
-  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1120;
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1136;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
