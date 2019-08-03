@@ -35,19 +35,19 @@
 							<i class="fa fa-globe"></i>
 						</div>
 						<div class="details">
-							<div class="number">
+							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								/* $sql_parent_menu="SELECT exercise_id FROM ".$db_suffix."exercise where exercise_status='1'";	
+								$sql_parent_menu="SELECT user_id FROM ".$db_suffix."user where role_id='".EMP_ROLE_ID."'";	
 								$parent_query = mysqli_query($db, $sql_parent_menu);
 								
 								$num=mysqli_num_rows($parent_query);
 								
-								echo $num;  */
+								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Active Exercises
+								 Employee(s)
 							</div>
 						</div>
 					</div>
@@ -58,19 +58,19 @@
 							<i class="fa fa-bar-chart-o"></i>
 						</div>
 						<div class="details">
-							<div class="number">
+							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								/* $sql = "select user_id from ".$db_suffix."user where role_id='16'";				
+								$sql="SELECT user_id FROM ".$db_suffix."user where user_status='1' AND role_id='".EMP_ROLE_ID."'";				
 								$query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($query);
 								
-								echo $num;  */
+								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Total Learners
+								<b>Active</b> employee(s)
 							</div>
 						</div>
 					</div>
@@ -81,19 +81,19 @@
 							<i class="fa fa-shopping-cart"></i>
 						</div>
 						<div class="details">
-							<div class="number">
+							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								/* $sql = "select user_id from ".$db_suffix."user where role_id='15'";				
+								$sql = "select task_id from ".$db_suffix."task where task_state='not_started'";				
 								$query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($query);
 								
-								echo $num;  */
+								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Total Teachers
+								 Tasks to <b>complete</b> 
 							</div>
 						</div>
 					</div>
@@ -104,55 +104,54 @@
 							<i class="fa fa-comments"></i>
 						</div>
 						<div class="details">
-							<div class="number">
+							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								/* $sql = "select DISTINCT user_org_name from ".$db_suffix."user where user_status = '1' AND user_org_name!=''";				
+								$sql = "select task_id from ".$db_suffix."task where task_state='started'";					
 								$query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($query);
 								
-								echo $num; */ 
+								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Institutions
+								 Tasks in <b>progress</b> 
 							</div>
 						</div>
 					</div>
 				</div>
 				
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-					<div class="dashboard-stat purple-plum">
+					<div class="dashboard-stat blue">
 						<div class="visual">
 							<i class="fa fa-globe"></i>
 						</div>
 						<div class="details">
-							<div class="number">
-								 <?php 
+							<div class="number" style="font-weight: bold">
+								<?php 
 								 
-								/* $sql_parent_menu="SELECT q.question_id FROM ".$db_suffix."question q
-								LEFT JOIN ".$db_suffix."exercise e ON q.exercise_id=e.exercise_id WHERE e.exercise_status='1'";	
-								$parent_query = mysqli_query($db, $sql_parent_menu);
+								$sql = "select task_id from ".$db_suffix."task where task_state='complete'";		
+								$parent_query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($parent_query);
 								
-								echo $num;  */
+								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Active Questions
+								 Tasks <b>completed</b> 
 							</div>
 						</div>
 					</div>
 				</div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hide">
 					<div class="dashboard-stat red-intense">
 						<div class="visual">
 							<i class="fa fa-bar-chart-o"></i>
 						</div>
 						<div class="details">
-							<div class="number">
+							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
 								/* $sql = "select user_id from ".$db_suffix."user where role_id='16' AND user_charge='1'";				

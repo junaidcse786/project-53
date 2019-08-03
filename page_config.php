@@ -64,41 +64,6 @@ $pages = array(
 						"addlanguage" 	=> "content_manager/add_language.php",
 					),
 										
-		"teachers" => array(
-
-						"performance" 	=> "teacher_things/performance.php",
-						
-						"questions" 	=> "teacher_things/questions.php",
-						
-						"users" 	=> "teacher_things/users.php",	
-						
-						"charts" 	=> "teacher_things/chart.php",
-						
-						"pack_users" 	=> "teacher_things/pack_users.php",	
-						
-						"rangliste" 	=> "teacher_things/rangliste.php",
-						
-						"settings" 	=> "teacher_things/settings.php",
-						
-						"notice_board" 	=> "teacher_things/notice_board.php",	
-						
-						"settings_adv" 	=> "teacher_things/settings_adv.php",						
-						
-					),
-								
-		"content"     => array
-
-						(
-							"contentlist"  => "content_manager/content.php",
-							
-							"grammarcontentlist"  => "content_manager/grammar_pages.php",
-
-							"addcontent"  => "content_manager/add_content.php",
-
-							"editcontent"  => "content_manager/edit_content.php"
-
-						),
-						
 		"gallery"     => array
 
 						(
@@ -111,83 +76,18 @@ $pages = array(
 						),
 						
 						
-		"reminder"     => array
-
-						(
-							"add_reminder"  => "reminder_manager/add_reminder.php",
-
-							"edit_reminder"  => "reminder_manager/edit_reminder.php",
-
-							"reminder"  => "reminder_manager/reminder.php"
-
-						),	
-									
-						
 		"regcode"     => array
 
 						(
 							"regcodelist"  => "reg_code_manager/regcode.php",
 							
-							"codeslist"  => "reg_code_manager/codes_list.php",
-
 							"addregcode"  => "reg_code_manager/add_regcode.php",
 
 							"editregcode"  => "reg_code_manager/edit_regcode.php"
 
 						),	
 						
-		"hangman"     => array
-
-						(
-							"hangman_topic"  => "hangman_files/hangman_topic.php",
-							
-							"add_topic"  => "hangman_files/add_topic.php",
-
-							"edit_topic"  => "hangman_files/edit_topic.php",
-							
-						),				
-						
-					
-		"exercise"     => array
-
-						(
-							"exerciselist"  => "exercise_manager/exercise.php",
-
-							"addexercise"  => "exercise_manager/add_exercise.php",
-
-							"editexercise"  => "exercise_manager/edit_exercise.php",
-							
-							"questionlist"  => "exercise_manager/question.php",
-
-							"addquestion"  => "exercise_manager/add_question.php",
-
-							"editquestion"  => "exercise_manager/edit_question.php",						
-							
-
-						),
-											
-		"voc"     => array
-
-						(
-
-							"vocsetlist"  => "vocabulary_manager/voc_set.php",
-							
-							"addvocset"  => "vocabulary_manager/add_voc_set.php",
-							
-							"editvocset"  => "vocabulary_manager/edit_voc_set.php",
-
-							"voclist"  => "vocabulary_manager/voc.php",
-							
-							"voclist1"  => "vocabulary_manager/voc1.php",
-							
-							"addvoc"  => "vocabulary_manager/add_voc.php",
-
-							"editvoc"  => "vocabulary_manager/edit_voc.php"
-
-						),				
-
-													
-
+		
 		"member"        => $config_role_pages,
 
 		
@@ -225,27 +125,8 @@ $pages = array(
 
 $menus = array(
 
-		"general" => array(
-
-						"language" => "Vocabulary language",
-
-					),
-
-						
-
 		"member"        =>$config_role_menu,
 
-		
-		"content" 	  => array
-
-						(
-							"contentlist"  => "Content List",
-							
-							"grammarcontentlist"  => "Grammar Page List",
-
-							"addcontent" =>  "Add Content"
-		                ),
-						
 		"gallery" 	  => array
 
 						(
@@ -253,14 +134,6 @@ $menus = array(
 
 							"addgallery" =>  "Upload File"
 		                ),	
-						
-		"reminder" 	  => array
-
-						(
-							"reminder"  => "Erinnerungsmail",
-
-							"add_reminder" =>  "Neue Erinnerungsmail erstellen"
-		                ),					
 						
 		"regcode" 	  => array
 
@@ -270,49 +143,6 @@ $menus = array(
 							"addregcode" =>  "Create new task"
 		                ),
 							
-		"exercise" 	  => array
-
-						(
-							"exerciselist"  => "Exercise List",
-
-							"addexercise" =>  "Add Exercise",
-							
-							"addquestion" =>  "Add Question"
-		                ),	
-						
-		"teachers" 	  => array
-
-						(
-							"settings_adv"  => "Aufgabenpaket",
-							
-							"settings"  => "Einstellungen",
-							
-							"rangliste"  => "Rangliste",
-							
-							"notice_board"  => "Rotes Brett",
-							
-		                ),														
-						
-		"voc" 	  => array
-
-						(
-							"vocsetlist"  => "Vocabulary Sets",
-							
-							"addvocset"  => "New Vocabulary Set",
-							
-							"voclist1"  => "Vocabulary Finder",
-							
-							"addvoc" =>  "Add Vocabulary"
-		                ),
-						
-		"hangman" 	  => array
-
-						(
-							"hangman_topic"  => "Topic List",
-							
-							"add_topic"  => "Add Topic",
-		                ),				
-
 		"setup" 	  => array    
 
 						(

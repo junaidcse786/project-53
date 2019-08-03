@@ -2,8 +2,12 @@
 	
 	session_start();
 	
-	date_default_timezone_get();	
-	$db = mysqli_connect("localhost","root","", "project-52");
+    date_default_timezone_get();	
+    $DB_HOST = "localhost";
+    $DB_USER = "root";
+    $DB_PASSWORD = "";
+    $DB_NAME = "project-52";
+	$db = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
 	
 	if(!($db))
      	trigger_error("Could not connect to the database", E_USER_ERROR);
