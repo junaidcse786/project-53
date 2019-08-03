@@ -1,7 +1,22 @@
-<?php 
-	
-$sql = "SELECT * FROM ".$db_suffix."codes ORDER BY codes_id DESC";
-$news_query = mysqli_query($db,$sql);
+<?php    
+
+if(isset($_GET["assignee_id"]) && !empty($_GET["assignee_id"])){
+   $assignee_id = $_GET["assignee_id"];
+
+   $sql = "select * from ".$db_suffix."user where user_id = '$assignee_id' limit 1";				
+   $query = mysqli_query($db, $sql);
+
+   if(mysqli_num_rows($query) > 0){
+         $usr = mysqli_fetch_object($query);
+         $assignee_full_name = $usr->user_first_name.' '.$usr->user_last_name;
+   }
+
+   $sql = "SELECT t.*, u.user_id, u.user_first_name, u.user_last_name FROM ".$db_suffix."task t LEFT JOIN ".$db_suffix."user u ON t.user_id = u.user_id WHERE t.user_id='$assignee_id'";
+}
+else
+   $sql = "SELECT t.*, u.user_id, u.user_first_name, u.user_last_name FROM ".$db_suffix."task t LEFT JOIN ".$db_suffix."user u ON t.user_id = u.user_id ORDER BY t.task_id DESC";
+
+   $user_query = mysqli_query($db,$sql);
 
 ?>
 
@@ -15,11 +30,11 @@ $news_query = mysqli_query($db,$sql);
 <!-----PAGE LEVEL CSS END--->
 
 
-                                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+<!-- BEGIN PAGE TITLE & BREADCRUMB-->
                                         <h3 class="page-title">
-                                                <?php echo $menus["$mKey"]["$pKey"]; ?> <small>The list of Reg. Codes already created</small>
+										Tasks list <small>Tasks created so far for employees <?php if(!empty($assignee_id)) echo "<b>".$assignee_full_name."</b>"; ?></small>
                                         </h3>
-                               <div class="page-bar">         
+                                        <div class="page-bar">         
                                         <ul class="page-breadcrumb">
                                                 <li>
                                                         <i class="fa fa-home"></i>
@@ -37,8 +52,7 @@ $news_query = mysqli_query($db,$sql);
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
                                 </div>
-                     
-                        <!-- END PAGE HEADER-->
+                       <!-- END PAGE HEADER-->
                         <!-- BEGIN PAGE CONTENT-->
                                               
                         <div class="row">
@@ -47,12 +61,11 @@ $news_query = mysqli_query($db,$sql);
             
            
                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-               
                <div class="portlet box grey-cascade">
                   <div class="portlet-title">
-                     <div class="caption"><i class="fa fa-table"></i>Codes</div>
+                     <div class="caption"><i class="fa fa-table"></i>Tasks <?php if(!empty($assignee_id)) echo "for <b>".$assignee_full_name."</b>"; ?></div>
                      <div class="actions">
-                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey=addregcode'; ?>" class="btn blue"><i class="fa fa-plus"></i> Add new Code</a>
+                        <a href="<?php echo '?mKey='.$mKey.'&pKey=addregcode';?>" class="btn blue"><i class="fa fa-plus"></i> Create new task</a>
                         <div class="btn-group">
                            <a class="btn green" href="#" data-toggle="dropdown">
                            <i class="fa fa-cogs"></i> Actions
@@ -62,6 +75,7 @@ $news_query = mysqli_query($db,$sql);
                               <li><a href="#" data-toggle="modal" data-target="#confirmation_all"><i class="fa fa-trash"></i> Delete</a></li>
                               <li><a href="#" data-toggle="modal" data-status="1" data-target="#confirmation_status"><i class="fa fa-flag"></i> Change status to Active</a></li>
                               <li><a href="#" data-toggle="modal" data-status="0" data-target="#confirmation_status"><i class="fa fa-flag-o"></i> Change status to InActive</a></li>
+                              
                            </ul>
                         </div>
                      </div>
@@ -72,64 +86,59 @@ $news_query = mysqli_query($db,$sql);
                            <tr>
                               <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /></th>
                               <th>Title</th>
-                              <th ></th>
-                              <th >Start Date</th> 
-                              <th >End Date</th> 
-                              <th >Org. Name</th>
-                              <th >Batch</th>
-                              <th >For</th>
-                              <th >Quantity</th> 
-                              <th >Status</th> 
-                              <!--<th ></th>-->                          
+                              <th>Description</th>
+                              <th>Assigned to</th>
+                              <th>Deadline</th>
+                              <th>State</th>
+                              <th>Completed</th>
+                              <th>Created</th>
+                              <th>Status</th>                            
                            </tr>
                         </thead>
                         <tbody>
                         
                         <?php 
-		   		 while($row = mysqli_fetch_object($news_query))
+		   		 while($row = mysqli_fetch_object($user_query))
 			    {
 				   
 		   ?>
            
                            <tr class="odd gradeX">
-                              <td><input type="checkbox" class="checkboxes" value="<?php echo $row->codes_id;?>" /></td>
-                              <td><a href="<?php echo '?mKey='.$mKey.'&pKey=editregcode&id='.$row->codes_id;?>"><?php echo $row->codes_title;?></a></td>
+                              <td><input type="checkbox" class="checkboxes" value="<?php echo $row->task_id;?>" /></td>
+                              <td><a href="<?php echo '?mKey='.$mKey.'&pKey=editregcode&id='.$row->task_id;?>"><?php echo $row->task_title; ?></a></td>
                               
-                              <td><a href="<?php echo '?mKey='.$mKey.'&pKey=codeslist&id='.$row->codes_id.'&title='.$row->codes_org_name.'&for='.$row->codes_stud;?>" class="btn default btn-xs green-stripe">View Codes </a></td>
+                              <td><?php echo substr(strip_tags($row->task_desc),0,30);?></td>
+
+                              <td><?php 
                               
-                              <td><?php echo date('d-m-Y', strtotime($row->codes_start_date));?></td>
+                              if(!empty($assignee_id)) echo $assignee_full_name;
                               
-                              <td><?php echo date('d-m-Y', strtotime($row->codes_end_date));?></td>
+                              else if(empty($assignee_id) && !empty($row->user_first_name)) echo '<a href="'.$_SERVER['REQUEST_URI'].'&assignee_id='.$row->user_id.'">'.$row->user_first_name.' '.$row->user_last_name.'</a>';?></td>
+
+                              <td><?php echo $row->task_deadline; ?></td>
+
+                              <td><?php 
                               
-                              <td><?php echo $row->codes_org_name;?></td>
+                              $badge = ($row->task_state == 'not_started' ? 'danger' : ($row->task_state == 'started' ? 'warning' : 'success'));
+
+                              echo '<span class="label label-md label-'.$badge.'">'.$row->task_state.'</span>'; 
                               
-                              <td><?php echo $row->codes_level;?></td>
-                              
-                               <td>
-							  <?php if($row->codes_stud)
-							  
-											echo '<span class="label label-md label-success">Students</span>'; 
-									else 
-											echo '<span class="label label-md label-warning">Teachers</span>';
-									?>
-                              </td>
-                              
-                              <td><?php echo $row->codes_quantity;?></td>
-                              
+                              ?></td>
+
+                              <td><?php echo $row->task_end_date; ?></td>
+
+                              <td><?php echo $row->task_created_time; ?></td>
+
                               <td>
-							  <?php if($row->codes_status)
-							  
-											echo '<span class="label label-md label-success">Active</span>'; 
-									else 
-											echo '<span class="label label-md label-danger">InActive</span>';
-									?>
+                                 <?php if($row->task_status==1)
+                                 
+                                          echo '<span class="label label-md label-success">Active</span>'; 
+                                          else if($row->task_status==0)
+                                    
+                                          echo '<span class="label label-md label-warning">InActive</span>';									
+                                    ?>
                               </td>
-                              <!--<td>
-                              
-                              <a href="<?php echo '?mKey='.$mKey.'&pKey=editregcode&id='.$row->codes_id;?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Edit</a>
-                              
-                              <a data-href="<?php echo SITE_URL_ADMIN; ?>reg_code_manager/delete_regcode.php?id=<?php echo $row->codes_id;?>" data-toggle="modal" href="#" data-target="#confirmation" class="btn default btn-xs red delete"><i class="fa fa-trash"></i> Delete</a>
-                              </td> -->                              
+
                            </tr>
                            
           <?php } ?>       
@@ -155,7 +164,7 @@ $news_query = mysqli_query($db,$sql);
                      <h4 class="modal-title">Delete Confirmation</h4>
                   </div>
                   <div class="modal-body">
-                        <span class="font-red-thunderbird"><strong>Warning !</strong></span> Are you sure you want to delete this(these) record(s)?         			</div>
+                        <span class="font-red-thunderbird"><strong>Warning !</strong></span> Are you sure you want to delete this(these)  <span class="item_number font-red"></span> record(s)?         			</div>
                   <div class="modal-footer">
                      <button id="delete_button" type="button" class="btn red-thunderbird">Delete</button>
                      <button type="button" class="btn default" data-dismiss="modal">Close</button>
@@ -185,7 +194,6 @@ $news_query = mysqli_query($db,$sql);
             </div>
             <!-- /.modal-dialog -->
          </div>
-                        <!-- /.modal -->
 
 <!-----MODALS FOR THIS PAGE END ---->
   
@@ -199,8 +207,6 @@ $news_query = mysqli_query($db,$sql);
                 </div>
                 <!-- END PAGE -->    
         </div>
-
-
         <!-- END CONTAINER -->
         
         <!-- BEGIN FOOTER -->
@@ -233,6 +239,16 @@ $news_query = mysqli_query($db,$sql);
                 });
 				
 				$('#confirmation_all').on('show.bs.modal', function(e) {
+				
+					 var num_item=0;
+					 
+					 $('input:checkbox[class=checkboxes]:checked').each(function(){
+						 
+						num_item++;
+					 })
+					 
+					 $('.item_number').html('<b>'+num_item+'</b>');
+					 
 					 
 					 $(this).find('#delete_button').on('click', function(e) { 
 					 
@@ -263,11 +279,11 @@ $news_query = mysqli_query($db,$sql);
 					 
 					 var id='';
 					 
-					 var table_name='codes';
+					 var table_name='task';
 					 
-					 var column_name='codes_status';
+					 var column_name='task_status';
 					 
-					 var column_id='codes_id';
+					 var column_id='task_id';
 					 
 					 $('input:checkbox[class=checkboxes]:checked').each(function(){
 						 

@@ -14,6 +14,7 @@ $query = mysqli_query($db, $sql);
 if(mysqli_num_rows($query) > 0){
         $usr = mysqli_fetch_object($query);
         $user_folder = $usr->user_first_name.'-'.$usr->user_last_name.'-'.$usr->user_id;
+        $user_full_name = $usr->user_first_name.'-'.$usr->user_last_name;
 
         if (!file_exists("data/FILES/".$user_folder))
                 mkdir("data/FILES/".$user_folder, 0700);
@@ -116,7 +117,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                                 </li>
                                                 <li>
                                                         <i class="fa fa-table"></i>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager</a>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager <b>(<?php echo $user_full_name ?>)</b></a>
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>

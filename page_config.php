@@ -265,9 +265,9 @@ $menus = array(
 		"regcode" 	  => array
 
 						(
-							"regcodelist"  => "Reg. Codes List",
+							"regcodelist"  => "Task list",
 
-							"addregcode" =>  "Add Reg. Code"
+							"addregcode" =>  "Create new task"
 		                ),
 							
 		"exercise" 	  => array

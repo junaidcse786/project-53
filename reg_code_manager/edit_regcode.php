@@ -1,36 +1,22 @@
 <?php 
 
-function generatePassword($length) {
-    $chars = 'ABCDEFGHJKMNPQRSTUVWXYZ123456789';
-    $count = mb_strlen($chars);
-
-    for ($i = 0, $result = ''; $i < $length; $i++) {
-        $index = rand(0, $count - 1);
-        $result .= mb_substr($chars, $index, 1);
-    }
-
-    return $result;
-}
-
-
 $id = isset($_REQUEST['id']) ? $_REQUEST['id']: 0;
-$sql = "select * from ".$db_suffix."codes where codes_id = $id limit 1";				
+$sql = "select * from ".$db_suffix."task where task_id = $id limit 1";				
 $query = mysqli_query($db, $sql);
 
 if(mysqli_num_rows($query) > 0)
 {
 	$content     = mysqli_fetch_object($query);
-	
-	$codes_title       = $content->codes_title;
-	$codes_value    = $content->codes_value;
-	$codes_org_name = $content->codes_org_name;
-	$codes_start_date  = $content->codes_start_date;
-	$codes_end_date    = $content->codes_end_date;
-	$codes_quantity    = $content->codes_quantity;
-	$codes_quantity_old    = $content->codes_quantity;
-	$codes_status      = $content->codes_status;
-	$codes_stud      = $content->codes_stud;
-	$voc_set_level      = $content->codes_level;
+
+	$task_title       = $content->task_title;
+	$task_deadline    = $content->task_deadline;
+	$task_desc = $content->task_desc;
+	$user_id  = $content->user_id;	
+	$task_status      = $content->task_status;	
+
+	$task_start_date      = $content->task_start_date;	
+	$task_state      = $content->task_state;	
+	$task_end_date      = $content->task_end_date;	
 }
 	
 $alert_message=""; $alert_box_show="hide"; $alert_type="success";
@@ -40,104 +26,49 @@ $err_easy="has-error";
 $err=0;
 
 $messages = array(
-					'codes_title' => array('status' => '', 'msg' => ''),
-					'codes_value' => array('status' => '', 'msg' => ''),
-					'voc_set_level' => array('status' => '', 'msg' => ''),
-					'codes_org_name' => array('status' => '', 'msg' => ''),
-					'codes_start_date' => array('status' => '', 'msg' => ''),
-					'codes_end_date' => array('status' => '', 'msg' => ''),
-					'codes_quantity' => array('status' => '', 'msg' => ''),
-					'codes_status' => array('status' => '', 'msg' => ''),
+					'task_title' => array('status' => '', 'msg' => ''),
+					'task_deadline' => array('status' => '', 'msg' => ''),
+					'task_start_date' => array('status' => '', 'msg' => ''),
+					'task_end_date' => array('status' => '', 'msg' => ''),
+					'task_desc' => array('status' => '', 'msg' => ''),
+					'task_status' => array('status' => '', 'msg' => ''),
 				);
 
 if(isset($_POST['Submit']))
 {	
 	extract($_POST);
 	
-	if(empty($voc_set_level))
+	if(empty($task_title))
 	{
-		$messages["voc_set_level"]["status"]=$err_easy;
-		$messages["voc_set_level"]["msg"]="Batch name / level is required";
+		$messages["task_title"]["status"]=$err_easy;
+		$messages["task_title"]["msg"]="Task Title is Required";;
 		$err++;		
-	}
-	
-	if(empty($codes_title))
-	{
-		$messages["codes_title"]["status"]=$err_easy;
-		$messages["codes_title"]["msg"]="Title is Required";;
-		$err++;		
-	}
-	
-	if(!empty($codes_value))
-	{
-		$dd = mysqli_query($db, "select codes_id from ".$db_suffix."codes where codes_value='$codes_value' AND codes_id!='$id'");
-		if(mysqli_num_rows($dd)>0){
-			$messages["codes_value"]["status"]=$err_easy;
-			$messages["codes_value"]["msg"]="Code already exists";;
-			$err++;		
-		}
-	}
-	
-	if(empty($codes_org_name))
-	{
-		$messages["codes_org_name"]["status"]=$err_easy;
-		$messages["codes_org_name"]["msg"]="Organisation Name is Required";;
-		$err++;		
-	}
-	
-	if(empty($codes_start_date))
-	{
-		$messages["codes_start_date"]["status"]=$err_easy;
-		$messages["codes_start_date"]["msg"]="Start Date is Required";;
-		$err++;		
-	}
-	
-	if(empty($codes_end_date))
-	{
-		$messages["codes_end_date"]["status"]=$err_easy;
-		$messages["codes_end_date"]["msg"]="End Date is Required";;
-		$err++;		
-	}
-	
-	if(empty($codes_quantity))
-	{
-		$messages["codes_quantity"]["status"]=$err_easy;
-		$messages["codes_quantity"]["msg"]="Quantity is Required";;
-		$err++;		
-	}
+	}	
 	
 	if($err == 0)
 	{
-		$sql = "UPDATE ".$db_suffix."codes SET codes_title='$codes_title', codes_value='$codes_value', codes_org_name='$codes_org_name', codes_start_date='$codes_start_date', codes_end_date='$codes_end_date', codes_quantity='$codes_quantity', codes_status='$codes_status', codes_stud='$codes_stud', codes_level='$voc_set_level' WHERE codes_id='$id'";
+		$sql = "UPDATE ".$db_suffix."task SET
+
+                                                task_title='$task_title', 
+                                                
+                                                task_deadline='$task_deadline', 
+                                                
+                                                task_desc='$task_desc',
+
+                                                task_start_date='$task_start_date',
+
+                                                task_state='$task_state',
+
+                                                task_end_date='$task_end_date',
+
+                                                user_id = '$user_id',
+                                                
+												task_status='$task_status'
+												
+												WHERE task_id='$id'"; 
 		
 		if(mysqli_query($db,$sql))
 		{		
-			if($codes_quantity_old!=$codes_quantity){
-				
-				$codes_quantity1=$codes_quantity;
-				
-				mysqli_query($db, "DELETE FROM ".$db_suffix."indiv_codes where codes_id='$id'");	
-				
-				while($codes_quantity1>0)
-				{
-					while(1){
-					
-						$random_code=generatePassword(15);
-						
-						$dd = mysqli_query($db, "select ic_id from ".$db_suffix."indiv_codes where codes_value='$random_code'");
-						
-						if(mysqli_num_rows($dd)<=0)
-							break;
-						else
-							continue;
-					}
-					
-					mysqli_query($db, "INSERT INTO ".$db_suffix."indiv_codes SET codes_id='$id', codes_value='$random_code'");	
-					
-					$codes_quantity1--;			
-				}
-			}
-			
 			$alert_message="Data updated successfully";		
 			$alert_box_show="show";
 			$alert_type="success";
@@ -175,7 +106,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 
                                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                                         <h3 class="page-title">
-                                                Reg. Code Manager <small>Here existing codes can be updated</small>
+                                                Task manager <small>Here existing tasks can be updated</small>
                                         </h3>
                                         <div class="page-bar">         
                                         <ul class="page-breadcrumb">
@@ -190,7 +121,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
                                                 <li>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=regcode&pKey=regcodelist'; ?>">Reg. Codes List</a>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=regcode&pKey=regcodelist'; ?>">Tasks List</a>
 														<i class="fa fa-angle-right"></i>
                                                 </li>
 												<li>
@@ -223,93 +154,110 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                          		<form action="<?php echo str_replace('&s_factor=1', '', $_SERVER['REQUEST_URI']);?>" class="form-horizontal" method="post" enctype="multipart/form-data">
                                
                                
-                              <div class="form-group <?php echo $messages["codes_title"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="codes_title">Title <span class="required">*</span></label>
+                              <div class="form-group <?php echo $messages["task_title"]["status"] ?>">
+                              		<label class="control-label col-md-3" for="task_title">Title <span class="required">*</span></label>
                               		<div class="col-md-4">
-                                 		<input type="text" placeholder="" class="form-control" name="codes_title" value="<?php echo $codes_title;?>"/>
-                                 		<span for="codes_title" class="help-block">Provide a title for the code<br /><?php echo $messages["codes_title"]["msg"] ?></span>
+                                 		<input type="text" placeholder="" class="form-control" name="task_title" value="<?php echo $task_title;?>"/>
+                                 		<span for="task_title" class="help-block">Provide a title for the task<br /><?php echo $messages["task_title"]["msg"] ?></span>
                               		</div>
                            	  </div>
                               
-                              <div class="form-group <?php echo $messages["codes_org_name"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="codes_org_name">For which organisation/school? <span class="required">*</span></label>
-                              		<div class="col-md-4">
-                                 		<input type="text" placeholder="" class="form-control" name="codes_org_name" value="<?php echo $codes_org_name;?>"/>
-                                 		<span for="codes_org_name" class="help-block">Make sure the school name of the students and their corresponding teachers are exactly the same and also the level.<br /><?php echo $messages["codes_org_name"]["msg"] ?></span>
-                              		</div>
-                           	  </div>
-                              
-                              <div class="form-group <?php echo $messages["voc_set_level"]["status"] ?>">
-                                  <label for="voc_set_level" class="control-label col-md-3">  Batch Name / Level</label>
-                                  <div class="col-md-4">
-                                 		<input type="text" placeholder="e.g. A1/ Gruppe 1 - A1" class="form-control" name="voc_set_level" value="<?php echo $voc_set_level;?>"/>
-                                 		<span for="voc_set_level" class="help-block"><?php echo $messages["voc_set_level"]["msg"] ?></span>
+                                 <div class="form-group <?php echo $messages["task_desc"]["status"] ?>">
+                              		<label class="control-label col-md-3" for="task_desc">Explain the task</label>
+                              		<div class="col-md-9">
+                                 		<textarea class="form-control ckeditor" rows="6" name="task_desc"><?php echo htmlspecialchars($task_desc); ?></textarea>
+                                 		<span for="task_desc" class="help-block"><?php echo $messages["task_desc"]["msg"] ?></span>
                               		</div>
                               </div>
                               
-                              <!--<div class="form-group <?php echo $messages["codes_value"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="codes_value">Code <span class="required">*</span></label>
-                              		<div class="col-md-4">
-                                 		<input type="text" class="form-control" name="codes_value" value="<?php echo $codes_value;?>"/>
-                                 		<span for="codes_value" class="help-block">Change the code yourself [at least 15 characters long]<br /><?php echo $messages["codes_value"]["msg"] ?></span>
-                              		</div>
-                              </div>-->
-                              
-                              <div class="form-group <?php echo $messages["codes_start_date"]["status"] ?>">
-                                <label class="control-label col-md-3">Start Date <span class="required">*</span></label>
+                            <div class="form-group <?php echo $messages["task_deadline"]["status"] ?>">
+                                <label class="control-label col-md-3">Task deadline</label>
                                 <div class="col-md-4">
-                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
-                                        <input name="codes_start_date" type="text" class="form-control" value="<?php echo $codes_start_date; ?>" readonly>
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="task_deadline" type="text" class="form-control" value="<?php echo $task_deadline; ?>" readonly>
                                         <span class="input-group-btn">
                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                         </span>
                                     </div>
                                     <!-- /input-group -->
                                     <span class="help-block">
-                                    Date when the code is valid from<br /><?php echo $messages["codes_start_date"]["msg"] ?></span>
+                                    <?php echo $messages["task_deadline"]["msg"] ?></span>
                                 </div>
                             </div>
-                            
-                            <div class="form-group <?php echo $messages["codes_end_date"]["status"] ?>">
-                                <label class="control-label col-md-3">End Date <span class="required">*</span></label>
+
+							<div class="form-group <?php echo $messages["task_start_date"]["status"] ?>">
+                                <label class="control-label col-md-3">Task start date</label>
                                 <div class="col-md-4">
-                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
-                                        <input name="codes_end_date" type="text" class="form-control" value="<?php echo $codes_end_date; ?>" readonly>
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="task_start_date" type="text" class="form-control" value="<?php echo $task_start_date; ?>" readonly>
                                         <span class="input-group-btn">
                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                         </span>
                                     </div>
                                     <!-- /input-group -->
                                     <span class="help-block">
-                                    Date till the code is valid<br /><?php echo $messages["codes_end_date"]["msg"] ?></span>
+                                    <?php echo $messages["task_start_date"]["msg"] ?></span>
                                 </div>
-                            </div>                           
-                            
+                            </div>
+
+							<div class="form-group <?php echo $messages["task_end_date"]["status"] ?>">
+                                <label class="control-label col-md-3">Task complete date</label>
+                                <div class="col-md-4">
+                                    <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
+                                        <input name="task_end_date" type="text" class="form-control" value="<?php echo $task_end_date; ?>" readonly>
+                                        <span class="input-group-btn">
+                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    <!-- /input-group -->
+                                    <span class="help-block">
+                                    <?php echo $messages["task_end_date"]["msg"] ?></span>
+                                </div>
+                            </div>  
+
+							<div class="form-group">
+                                  <label for="task_state" class="control-label col-md-3">Assign task to: </label>
+                                  <div class="col-md-3">
+                                     <select class="form-control" name="task_state">
+                                        <option <?php echo ($task_state=='not_started')? 'selected="selected"' : ""; ?> value="not_started">not_started</option>
+										<option <?php echo ($task_state=='started')? 'selected="selected"' : ""; ?> value="started">started</option>
+										<option <?php echo ($task_state=='complete')? 'selected="selected"' : ""; ?> value="complete">complete</option>
+                                     </select>
+                                  </div>
+                              </div>
                               
-                              <div class="form-group <?php echo $messages["codes_quantity"]["status"] ?>">
-                              		<label class="control-label col-md-3" for="codes_quantity">Quantity <span class="required">*</span></label>
-                              		<div class="col-md-4">
-                                 		<input type="text" placeholder="" class="form-control" name="codes_quantity" value="<?php echo $codes_quantity;?>"/>
-                                 		<span for="codes_quantity" class="help-block">How many codes for the students<br /><?php echo $messages["codes_quantity"]["msg"] ?></span>
-                              		</div>
-                           	  </div>
-                              
-                              <div class="form-group last">
-                                  <label for="codes_status" class="control-label col-md-3">For</label>
-                                  <div class="col-md-2">
-                                     <select class="form-control" name="codes_stud">
-                                        <option <?php if($codes_stud==1) echo 'selected="selected"'; ?> value="1">Students</option>
-                                        <option <?php if($codes_stud==0) echo 'selected="selected"'; ?> value="0">Teachers</option>
+                            <div class="form-group">
+                                  <label for="user_id" class="control-label col-md-3">Assign task to: </label>
+                                  <div class="col-md-3">
+                                     <select class="form-control" name="user_id">
+                                        <option value=""></option>
+                                        
+                                        <?php
+									   $sql_parent_menu = "SELECT user_id, user_first_name, user_last_name FROM ".$db_suffix."user where user_status='1' AND role_id='".EMP_ROLE_ID."'";	
+										$parent_query = mysqli_query($db, $sql_parent_menu);
+										while($parent_obj = mysqli_fetch_object($parent_query))
+										{	
+											if($parent_obj->user_id == $user_id)
+											
+												echo '<option selected="selected" value="'.$parent_obj->user_id.'">'.$parent_obj->user_first_name.' '.$parent_obj->user_last_name.'</option>';
+											
+											else
+												
+                                                echo '<option value="'.$parent_obj->user_id.'">'.$parent_obj->user_first_name.' '.$parent_obj->user_last_name.'</option>';
+									
+										}
+                                        ?>
+                                        
                                      </select>
                                   </div>
                               </div>
                               
                               <div class="form-group last">
-                                  <label for="codes_status" class="control-label col-md-3">Status</label>
+                                  <label for="task_status" class="control-label col-md-3">Status</label>
                                   <div class="col-md-2">
-                                     <select class="form-control" name="codes_status">
-                                        <option <?php if($codes_status==1) echo 'selected="selected"'; ?> value="1">Active</option>
-                                        <option <?php if($codes_status==0) echo 'selected="selected"'; ?> value="0">InActive</option>
+                                     <select class="form-control" name="task_status">
+                                        <option <?php if($task_status==1) echo 'selected="selected"'; ?> value="1">Active</option>
+                                        <option <?php if($task_status==0) echo 'selected="selected"'; ?> value="0">InActive</option>
                                      </select>
                                   </div>
                               </div>
@@ -326,6 +274,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                       </div>
                       
                   </div>
+				  </div>
                </div>
                <!-- END EXAMPLE TABLE PORTLET-->
             </div>
@@ -371,6 +320,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
        
        	<script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 		<script src="<?php echo SITE_URL_ADMIN; ?>assets/admin/pages/scripts/components-pickers.js"></script>
+		<script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/ckeditor/ckeditor.js"></script>
         
         <script>
         jQuery(document).ready(function() {       

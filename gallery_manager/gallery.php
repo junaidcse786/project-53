@@ -8,6 +8,7 @@ $query = mysqli_query($db, $sql);
 if(mysqli_num_rows($query) > 0){
         $usr = mysqli_fetch_object($query);
         $user_folder = $usr->user_first_name.'-'.$usr->user_last_name.'-'.$usr->user_id."/";
+        $user_full_name = $usr->user_first_name.'-'.$usr->user_last_name;
 }
 	
 $sql = "SELECT * FROM ".$db_suffix."gallery WHERE user_id='$user_id'";
@@ -40,6 +41,10 @@ $news_query = mysqli_query($db,$sql);
                                                         <i class="fa fa-table"></i>
                                                         <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>">File manager</a>
                                                         <i class="fa fa-angle-right"></i>
+                                                </li>
+                                                <li>
+                                                        <i class="fa fa-file-o"></i>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>"><?php echo $user_full_name ?></a>
                                                 </li>                                              
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->

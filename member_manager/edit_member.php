@@ -251,8 +251,13 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                                         <a href="#"><?php echo $active_module_name; ?></a>
                                                         <i class="fa fa-angle-right"></i>
                                                 </li>
+												<li>
+                                                        <i class="<?php echo $active_module_icon; ?>"></i>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey=memberlist-'.$role_id; ?>">Members list</a>
+                                                        <i class="fa fa-angle-right"></i>
+                                                </li>
                                                 <li>
-                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey='.$pKey; ?>">Add Member</a>
+                                                        <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey=addmember&roll_id='.$role_id; ?>">Add Member</a>
                                                 </li>
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
@@ -457,7 +462,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                
                              <h3 class="form-section">Login Info</h3> 
                              
-                             <div class="form-group hide">
+                             <div class="form-group">
                                   <label for="role_id" class="control-label col-md-3">User Role</label>
                                   <div class="col-md-3">
                                      <select class="form-control" name="role_id">
