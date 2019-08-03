@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 03, 2019 at 12:39 PM
+-- Generation Time: Aug 03, 2019 at 01:56 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -137,6 +137,13 @@ CREATE TABLE `ecom_gallery` (
   `gallery_size` int(255) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ecom_gallery`
+--
+
+INSERT INTO `ecom_gallery` (`gallery_id`, `gallery_title`, `gallery_file`, `gallery_uploaded_time`, `gallery_type`, `gallery_size`, `user_id`) VALUES
+(5, '19080315024download.png', '19080315024download.png', '2019-08-03 11:50:24', 'image/png', 1556, 1135);
 
 -- --------------------------------------------------------
 
@@ -524,7 +531,7 @@ ALTER TABLE `ecom_draft_message`
 -- AUTO_INCREMENT for table `ecom_gallery`
 --
 ALTER TABLE `ecom_gallery`
-  MODIFY `gallery_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `gallery_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `ecom_message`

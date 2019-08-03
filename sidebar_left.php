@@ -108,7 +108,7 @@
 							}
 						 }
 
-						if($_SESSION["role_id"]=='15'){
+						/* if($_SESSION["role_id"]=='15'){
 						
 							$active=''; 
 							
@@ -122,7 +122,7 @@
 											<span class="title">Messages</span>														
 									</a>
 								  </li>';
-						}
+						} */
 							  
 							  
 						if($_SESSION["role_id"]=='8'){

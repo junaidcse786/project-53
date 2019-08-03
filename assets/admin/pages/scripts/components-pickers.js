@@ -139,7 +139,7 @@ var ComponentsPickers = function () {
         $(".form_datetime").datetimepicker({
             autoclose: true,
             isRTL: Metronic.isRTL(),
-            format: "dd MM yyyy - hh:ii",
+            format: "yyyy-mm-dd HH:ii:ss",
             pickerPosition: (Metronic.isRTL() ? "bottom-right" : "bottom-left")
         });
 

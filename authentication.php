@@ -9,7 +9,7 @@
 			
 	else {		
 		
-		array_push($modules_keys, "myaccount"/* , "inbox", "drafts", "sent", "viewmessage", "sendmessage" */); // common modules for all users
+		array_push($modules_keys, "myaccount", "myfiles"/* , "inbox", "drafts", "sent", "viewmessage", "sendmessage" */); // common modules for all users
 		
 		if($_SESSION["role_id"]=='8')
 			

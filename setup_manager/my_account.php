@@ -237,7 +237,12 @@ if(isset($_POST['Submit'])){
                <div class="portlet box grey-cascade">
                   <div class="portlet-title">
                      <div class="caption"><i class="fa fa-reorder"></i> Fields marked with <strong>*</strong> can not be left empty</div>
-                  </div>
+					 <?php if(1): ?>
+					 <div class="actions">
+					 	<a href="<?php echo '?mKey=myfiles&pKey=files';?>" class="btn green"><i class="fa fa-file-o"></i> => My documents</a>
+					 </div>
+					 <?php endif; ?>
+				  </div>
                   <div class="portlet-body form">
                   
                       <div class="form-body">

@@ -54,16 +54,11 @@ $pages = array(
 		"sendmessage"  => "message_manager/send_message.php",
 		//common pages END
 		
+		"myfiles" => array(
 
-		"general" => array(
+			"files" 	=> "setup_manager/myfiles.php",	
+		),
 
-						"language" 	=> "content_manager/language.php",
-						
-						"editlanguage" 	=> "content_manager/edit_language.php",
-						
-						"addlanguage" 	=> "content_manager/add_language.php",
-					),
-										
 		"gallery"     => array
 
 						(
