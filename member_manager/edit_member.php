@@ -599,7 +599,21 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
         <script>
         jQuery(document).ready(function() {       
 			   ComponentsPickers.init();
-			});   
+		});
+		
+		function calculate_vacation(){
+			if($('input[name="user_vacation_total"]').val() && $('input[name="user_vacation_taken"]').val())
+				$('input[name="user_vacation_days_left"]').val($('input[name="user_vacation_total"]').val()-$('input[name="user_vacation_taken"]').val());
+		}
+
+		$('input[name="user_vacation_total"]').on('input', function() {			
+			calculate_vacation();
+		});
+
+		$('input[name="user_vacation_taken"]').on('input', function() {			
+			calculate_vacation();
+		});
+		
 		</script>
        
         

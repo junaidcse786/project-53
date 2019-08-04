@@ -23,7 +23,7 @@
             <!-- FOR ADMIN -->
             
             <div class="row">
-            	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hide">
 					<div class="dashboard-stat purple-plum">
 						<div class="visual">
 							<i class="fa fa-globe"></i>
@@ -47,7 +47,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hide">
 					<div class="dashboard-stat red-intense">
 						<div class="visual">
 							<i class="fa fa-bar-chart-o"></i>
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="dashboard-stat yellow-gold">
 						<div class="visual">
 							<i class="fa fa-shopping-cart"></i>
@@ -94,7 +94,7 @@
 						</div>
 					</div>
 				</div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="dashboard-stat green-seagreen">
 						<div class="visual">
 							<i class="fa fa-comments"></i>
@@ -118,7 +118,7 @@
 					</div>
 				</div>
 				
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 					<div class="dashboard-stat blue">
 						<div class="visual">
 							<i class="fa fa-globe"></i>
