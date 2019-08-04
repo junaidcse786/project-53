@@ -85,6 +85,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 <!-----PAGE LEVEL CSS BEGIN--->
 
 <link rel="stylesheet" type="text/css" href="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/bootstrap-datepicker/css/datepicker3.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/select2/select2.css" />
 
 <!-----PAGE LEVEL CSS END--->
 
@@ -170,7 +171,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                             <div class="form-group">
                                   <label for="user_id" class="control-label col-md-3">Assign task to: </label>
                                   <div class="col-md-3">
-                                     <select class="form-control" name="user_id">
+                                     <select class="form-control select2me" data-placeholder="Select employee" tabindex="0" name="user_id">
                                         <option value=""></option>
                                         
                                         <?php
@@ -259,8 +260,9 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
        <!-----PAGE LEVEL SCRIPTS BEGIN--->
        
        	<script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-		<script src="<?php echo SITE_URL_ADMIN; ?>assets/admin/pages/scripts/components-pickers.js"></script>
+		   <script src="<?php echo SITE_URL_ADMIN; ?>assets/admin/pages/scripts/components-pickers.js"></script>
         <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/select2/select2.min.js"></script>
 
         
         <script>
