@@ -145,7 +145,7 @@ if(isset($_POST['Submit'])){
 	if($err == 0){
 		
 		if($_FILES["user_photo"]["name"]!=''){
-			$image_dir = "../data/user/";
+			$image_dir = "data/user/";
 			$image_name = date('ymdgis').$_FILES['user_photo']['name'];
 		}
 		else
