@@ -24,7 +24,7 @@ if(isset($_POST['Submit']))
 		$err++;
 	}
 	
-	$image_dir = "../images/";
+	$image_dir = "images/";
 	if($_FILES['banner_image']['name'] != '')
 
 		{
@@ -225,6 +225,6 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 if($alert_type=='success' && isset($_POST["Submit"]))
 {
 	//usleep(3000000);
-	echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
+	// echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
 }
 ?>
