@@ -49,6 +49,12 @@ else
                                                 <li>
                                                         <a href="<?php echo SITE_URL_ADMIN.'?mKey='.$mKey.'&pKey='.$pKey; ?>"><?php echo $menus["$mKey"]["$pKey"]; ?></a>
                                                 </li>
+                                                <?php if(!empty($assignee_id)): ?>
+                                                <li>
+                                                         <i class="fa fa-angle-right"></i>
+                                                        <a href="#"><?php echo "Tasks for <b>".$assignee_full_name."</b>"; ?></a>
+                                                </li>
+                                                <?php endif; ?>
                                         </ul>
                                         <!-- END PAGE TITLE & BREADCRUMB-->
                                 </div>
@@ -87,7 +93,9 @@ else
                               <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /></th>
                               <th>Title</th>
                               <!-- <th>Description</th> -->
+                              <?php if(empty($assignee_id)): ?>
                               <th>Assigned to</th>
+                              <?php endif; ?>
                               <th>Deadline</th>
                               <th>State</th>
                               <th>Started</th>
@@ -109,12 +117,15 @@ else
                               <td><a href="<?php echo '?mKey='.$mKey.'&pKey=editregcode&id='.$row->task_id;?>"><?php echo $row->task_title; ?></a></td>
                               
                               <!-- <td><?php echo substr(strip_tags($row->task_desc),0,30);?></td> -->
-
+                              <?php if(empty($assignee_id)): ?>
                               <td><?php 
                               
                               if(!empty($assignee_id)) echo $assignee_full_name;
                               
-                              else if(empty($assignee_id) && !empty($row->user_first_name)) echo '<a href="'.$_SERVER['REQUEST_URI'].'&assignee_id='.$row->user_id.'">'.$row->user_first_name.' '.$row->user_last_name.'</a>';?></td>
+                              else if(empty($assignee_id) && !empty($row->user_first_name)) echo '<a href="'.$_SERVER['REQUEST_URI'].'&assignee_id='.$row->user_id.'">'.$row->user_first_name.' '.$row->user_last_name.'</a>';
+                              ?>
+                              </td>
+                              <?php endif; ?>
 
                               <td><?php echo $row->task_deadline; ?></td>
 

@@ -274,7 +274,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                   <div class="portlet-title">
                      <div class="caption"><i class="fa fa-reorder"></i>You have to fill the fields marked with <strong>*</strong></div>
                      <div class="actions">
-                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>" class="btn green"><i class="fa fa-file"></i> Upload files </a>
+                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=gallerylist&user_id='.$user_id; ?>" class="btn green"><i class="fa fa-upload"></i> Upload files </a>
                         
                      </div>
                   </div>
@@ -431,6 +431,13 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                               		<label class="control-label col-md-3" for="user_vacation_taken">Spent vacation days</label>
                               		<div class="col-md-4">
                                  		<input type="text" class="form-control" name="user_vacation_taken" value="<?php echo $user_vacation_taken;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group has-warning">
+                              		<label class="control-label col-md-3" for="user_vacation_days_left">Vacation days left</label>
+                              		<div class="col-md-4">
+                                 		<input readonly type="text" class="form-control input-small" name="user_vacation_days_left" value="<?php echo $user_vacation_total - $user_vacation_taken;?>"/>
                               		</div>
                            	  </div>
                               

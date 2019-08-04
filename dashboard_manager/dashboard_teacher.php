@@ -1,9 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/select2/select2.css" />
-
-<link rel="stylesheet" href="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css" />
-
-<link rel="stylesheet" type="text/css" href="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/bootstrap-datepicker/css/datepicker3.css"/>
-
 <!-- BEGIN PAGE header-->
 
 			<h3 class="page-title">
@@ -38,16 +32,17 @@
 							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								$sql_parent_menu="SELECT user_id FROM ".$db_suffix."user where role_id='".EMP_ROLE_ID."'";	
+								$sql_parent_menu="SELECT user_vacation_total FROM ".$db_suffix."user where user_id='".$_SESSION["user_id"]."'";	
 								$parent_query = mysqli_query($db, $sql_parent_menu);
 								
-								$num=mysqli_num_rows($parent_query);
+								$usr = mysqli_fetch_object($parent_query);
+								$num = $usr->user_vacation_total;
 								
 								echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Employee(s)
+								 Vacation day(s) <b>allowed</b> 
 							</div>
 						</div>
 					</div>
@@ -61,16 +56,17 @@
 							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								$sql="SELECT user_id FROM ".$db_suffix."user where user_status='1' AND role_id='".EMP_ROLE_ID."'";				
+								$sql="SELECT user_vacation_taken FROM ".$db_suffix."user where user_id='".$_SESSION["user_id"]."'";					
 								$query = mysqli_query($db, $sql);
 								
-								$num=mysqli_num_rows($query);
+								$usr = mysqli_fetch_object($query);
+								$num = $usr->user_vacation_taken;
 								
-								echo $num; 
+								echo $num;
 								 ?>
 							</div>
 							<div class="desc">
-								<b>Active</b> employee(s)
+								Vacation days <b>taken</b> 
 							</div>
 						</div>
 					</div>
@@ -84,16 +80,16 @@
 							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								$sql = "select task_id from ".$db_suffix."task where task_state='not_started'";				
-								$query = mysqli_query($db, $sql);
-								
-								$num=mysqli_num_rows($query);
-								
-								echo $num; 
+								 $sql = "select task_id from ".$db_suffix."task where task_state='not_started' AND user_id='".$_SESSION["user_id"]."'";					
+								 $query = mysqli_query($db, $sql);
+								 
+								 $num=mysqli_num_rows($query);
+								 
+								 echo $num; 
 								 ?>
 							</div>
 							<div class="desc">
-								 Tasks to <b>complete</b> 
+								Tasks in <b>line</b> 
 							</div>
 						</div>
 					</div>
@@ -107,7 +103,7 @@
 							<div class="number" style="font-weight: bold">
 								 <?php 
 								 
-								$sql = "select task_id from ".$db_suffix."task where task_state='started'";					
+								$sql = "select task_id from ".$db_suffix."task where task_state='started' AND user_id='".$_SESSION["user_id"]."'";					
 								$query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($query);
@@ -131,7 +127,7 @@
 							<div class="number" style="font-weight: bold">
 								<?php 
 								 
-								$sql = "select task_id from ".$db_suffix."task where task_state='complete'";		
+								$sql = "select task_id from ".$db_suffix."task where task_state='complete' AND user_id='".$_SESSION["user_id"]."'";		
 								$parent_query = mysqli_query($db, $sql);
 								
 								$num=mysqli_num_rows($parent_query);
@@ -168,7 +164,41 @@
 						</div>
 					</div>
 				</div>
-			</div>                     
+			</div> 
+			<div class="row">
+				<?php
+				
+				$sql = "SELECT * FROM ".$db_suffix."task WHERE task_status='1' AND task_state!='complete' AND user_id = '".$_SESSION["user_id"]."'";
+				$user_query = mysqli_query($db,$sql);
+
+				while($row = mysqli_fetch_object($user_query)):
+				
+				?>
+				<div class="col-md-4">
+					<div class="portlet box <?php echo ($row->task_state=='not_started')? 'yellow' : 'green'; ?>">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-tasks"></i>
+								<span class="caption-subject">Task</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn red btn-outline btn-circle btn-sm" href="#" data-toggle="modal" data-taskid="<?php echo $row->task_id; ?>" data-status="<?php echo ($row->task_state=='not_started')? "started" : "complete" ?>" data-target="#confirmation_status">
+										<i class="fa fa-arrow-right"></i> <?php echo ($row->task_state=='not_started')? "Start task" : "Mark task as complete" ?>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="alert alert-<?php echo ($row->task_state=='not_started')? 'warning' : 'success'; ?>">
+                                <?php echo $row->task_title; ?> 
+							</div>							
+							<?php echo $row->task_desc; ?>
+						</div>
+					</div>
+				</div>
+				<?php endwhile; ?>
+			</div>                    
           
 			<!--FOR ADMIN END -->            
             <!-- END PAGE CONTENT -->
@@ -185,27 +215,25 @@
         
         <!-- END FOOTER -->
         
-        <div class="modal fade" id="confirmation">
+		<div class="modal fade" id="confirmation_status">
             <div class="modal-dialog">
                <div class="modal-content">
                   <div class="modal-header">
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                     <h4 class="modal-title">Confirmation</h4>
+                     <h4 class="modal-title">Status Change Confirmation</h4>
                   </div>
                   <div class="modal-body">
-                        <span class="danger"><strong>Warning !</strong> Are you sure you want to perform this action?</span>         			</div>
+                        <span class="font-red-thunderbird"><strong>Warning !</strong></span> Are you sure you want to change the status of this task?
+				  </div>
                   <div class="modal-footer">
-                     <button id="delete_button" type="button" class="btn red">Do it</button>
+                     <button id="delete_button" type="button" class="btn red-thunderbird">Change</button>
                      <button type="button" class="btn default" data-dismiss="modal">Close</button>
                   </div>
                </div>
                <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
-         </div>
-        
-        
-        
+         </div>        
       
         <!-- BEGIN CORE PLUGINS --> 
           
@@ -213,43 +241,35 @@
 		<?php require_once('scripts.php'); ?>
         
         
-       <!-----page level scripts start--->
-       
-   <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/select2/select2.min.js"></script>
-        
-   <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
-   
-   <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
-   
-   <script src="<?php echo SITE_URL_ADMIN; ?>assets/admin/pages/scripts/table-managed.js"></script>
-   
-   <script type="text/javascript" src="<?php echo SITE_URL_ADMIN; ?>assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
-   
-    <script>
-                /* jQuery(document).ready(function() {    
-                    TableManaged.init();							   	   
-                }); */
+       <!-----page level scripts start--->  
+
+   <script>	
+
+		$('#confirmation_status').on('show.bs.modal', function(e) {
+			
+			var status=$(e.relatedTarget).data('status');
+
+			var id=$(e.relatedTarget).data('taskid')+',';
+			
+			$(this).find('#delete_button').on('click', function(e) {
+			
+				var table_name='task';
 				
-				$('#confirmation').on('show.bs.modal', function(e) {
-					 
-					 var target=$(e.relatedTarget).data('href');
-					 
-					$(this).find('#delete_button').on('click', function(e) { 
-					 
-					 	$.ajax({
-								   type: "POST",
-								   url:  target,
-								   success: function(data){		
-										window.location.reload(true);
-								   },
-								   error : function(data){
-									    window.location.reload(true);
-								   }			   		
-						   });
-					 
-					});
-		        });				
+				var column_name='task_state';
 				
+				var column_id='task_id';			
+			
+				$.ajax({
+					type: "POST",
+					url:  '<?php echo SITE_URL_ADMIN.'reg_code_manager/change_status.php' ; ?>',
+					dataType: "text",
+					data: {id: id, status: status, table_name:table_name, column_name:column_name, column_id:column_id},
+					success: function(data){		
+							window.location.reload(true);
+					}								   		   		
+				});
+			});
+		});
 	</script>	
    
        

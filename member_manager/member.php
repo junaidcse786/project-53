@@ -80,7 +80,10 @@ $user_query = mysqli_query($db,$user_sql);
                               <th >Department</th>
                               <th >Branch</th>
                               <th >Created at</th>
-                              <th >Status</th>                            
+                              <th >Status</th>
+                              <?php if($role_id==EMP_ROLE_ID): ?>
+                              <th ></th>                
+                              <?php endif; ?>            
                            </tr>
                         </thead>
                         <tbody>
@@ -115,6 +118,9 @@ $user_query = mysqli_query($db,$user_sql);
                                     
                                           echo '<span class="label label-md label-warning">InActive</span>';									
                                     ?>
+                              </td>
+                              <td>
+                                 <a class="btn btn-xs green" href="<?php echo '?mKey=gallery&pKey=gallerylist&user_id='.$row->user_id;?>"><i class="fa fa-file"></i> Files</a>
                               </td>
 
                            </tr>

@@ -198,6 +198,13 @@ if(isset($_POST['Submit'])){
 	}
 }
 
+if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
+{
+	$alert_message="Data inserted successfully";		
+	$alert_box_show="show";
+	$alert_type="success";
+}
+
 ?>
 
 <!-----PAGE LEVEL CSS BEGIN--->
@@ -235,7 +242,7 @@ if(isset($_POST['Submit'])){
                <div class="portlet box grey-cascade">
                   <div class="portlet-title">
                      <div class="caption"><i class="fa fa-reorder"></i> Fields marked with <strong>*</strong> can not be left empty</div>
-					 <?php if(1): ?>
+					 <?php if($role_id!=8): ?>
 					 <div class="actions">
 					 	<a href="<?php echo '?mKey=myfiles&pKey=files';?>" class="btn green"><i class="fa fa-file-o"></i> => My documents</a>
 					 </div>
@@ -396,6 +403,13 @@ if(isset($_POST['Submit'])){
                               		<label class="control-label col-md-3" for="user_vacation_taken">Spent vacation days</label>
                               		<div class="col-md-4">
                                  		<input readonly type="text" class="form-control" name="user_vacation_taken" value="<?php echo $user_vacation_taken;?>"/>
+                              		</div>
+                           	  </div>
+
+								 <div class="form-group has-warning">
+                              		<label class="control-label col-md-3" for="user_vacation_days_left">Vacation days left</label>
+                              		<div class="col-md-4">
+                                 		<input readonly type="text" class="form-control input-small" name="user_vacation_days_left" value="<?php echo $user_vacation_total - $user_vacation_taken;?>"/>
                               		</div>
                            	  </div>
                               
@@ -577,6 +591,14 @@ if(isset($_POST['Submit'])){
 			});
 		
 		</script>
+
+<?php 
+if($alert_type=='success' && isset($_POST["Submit"]))
+{
+	//usleep(3000000);
+	 echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
+}
+?>
        
         
         <!-----PAGE LEVEL SCRIPTS END--->

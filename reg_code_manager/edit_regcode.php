@@ -47,7 +47,18 @@ if(isset($_POST['Submit']))
 	
 	if($err == 0)
 	{
-		$sql = "UPDATE ".$db_suffix."task SET
+        $added_condition='';
+        
+        if($task_state=='started')
+            $added_condition = ", task_start_date=NOW()";
+
+        else if($task_state=='complete')
+            $added_condition = ", task_end_date=NOW()";
+
+        else
+            $added_condition = ", task_end_date='0000-00-00 00:00:00', task_start_date='0000-00-00 00:00:00'";    
+        
+        $sql = "UPDATE ".$db_suffix."task SET
 
                                                 task_title='$task_title', 
                                                 
@@ -63,7 +74,9 @@ if(isset($_POST['Submit']))
 
                                                 user_id = '$user_id',
                                                 
-												task_status='$task_status'
+                                                task_status='$task_status'
+                                                
+                                                $added_condition
 												
 												WHERE task_id='$id'"; 
 		

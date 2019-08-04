@@ -177,7 +177,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 													<a href="#" class="btn red fileinput-exists" data-dismiss="fileinput">
 													Remove </a>
 												</div>
-                                                <span for="gallery_file" class="help-block"><?php echo $messages["gallery_file"]["msg"] ?></span>
+                                                <span for="gallery_file" class="help-block">Multiple files can be uploaded simultaneously<?php echo $messages["gallery_file"]["msg"] ?></span>
 											</div>
 										</div>
 								</div>
@@ -253,6 +253,6 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
 if($alert_type=='success' && isset($_POST["Submit"]))
 {
 	//usleep(3000000);
-	// echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
+	echo '<script>window.location="'.$_SERVER['REQUEST_URI'].'&s_factor=1";</script>';
 }
 ?>

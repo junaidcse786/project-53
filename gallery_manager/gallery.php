@@ -64,7 +64,7 @@ $news_query = mysqli_query($db,$sql);
                   <div class="portlet-title">
                      <div class="caption"><i class="fa fa-table"></i>Files</div>
                      <div class="actions">
-                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=addgallery&user_id='.$user_id; ?>" class="btn blue"><i class="fa fa-plus"></i> Upload new file</a>
+                        <a href="<?php echo SITE_URL_ADMIN.'?mKey=gallery&pKey=addgallery&user_id='.$user_id; ?>" class="btn blue"><i class="fa fa-upload"></i> Upload new file</a>
                         <div class="btn-group">
                            <a class="btn green" href="#" data-toggle="dropdown">
                            <i class="fa fa-cogs"></i> Actions
