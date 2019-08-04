@@ -66,11 +66,7 @@ if(isset($_POST['Submit']))
                                                 
                                                 task_desc='$task_desc',
 
-                                                task_start_date='$task_start_date',
-
                                                 task_state='$task_state',
-
-                                                task_end_date='$task_end_date',
 
                                                 user_id = '$user_id',
                                                 
@@ -199,7 +195,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                 </div>
                             </div>
 
-							<div class="form-group <?php echo $messages["task_start_date"]["status"] ?>">
+							<div class="form-group hide <?php echo $messages["task_start_date"]["status"] ?>">
                                 <label class="control-label col-md-3">Task start date</label>
                                 <div class="col-md-4">
                                     <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
@@ -214,7 +210,7 @@ if(!isset($_POST["Submit"]) && isset($_GET["s_factor"]))
                                 </div>
                             </div>
 
-							<div class="form-group <?php echo $messages["task_end_date"]["status"] ?>">
+							<div class="form-group hide <?php echo $messages["task_end_date"]["status"] ?>">
                                 <label class="control-label col-md-3">Task complete date</label>
                                 <div class="col-md-4">
                                     <div class="input-group input-medium date date-picker" data-date-format="yyyy-mm-dd">
