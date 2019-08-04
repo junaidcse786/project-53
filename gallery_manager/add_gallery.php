@@ -17,7 +17,7 @@ if(mysqli_num_rows($query) > 0){
         $user_full_name = $usr->user_first_name.'-'.$usr->user_last_name;
 
         if (!file_exists("data/FILES/".$user_folder))
-                mkdir("data/FILES/".$user_folder, 0700);
+                mkdir("data/FILES/".$user_folder, 0755);
 }
 
 $err=0;

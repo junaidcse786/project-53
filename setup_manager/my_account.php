@@ -154,8 +154,6 @@ if(isset($_POST['Submit'])){
 		
 		$sql_user = "UPDATE ".$db_suffix."user SET 
 		
-									role_id = '$role_id',
-		
 		                           	user_first_name = '$user_first_name',
 									
 									user_last_name = '$user_last_name',
@@ -273,7 +271,7 @@ if(isset($_POST['Submit'])){
                               		</div>
                            	  </div>
 
-							  <?php if(1): ?>
+							  <?php if($role_id!='8'): ?>
 
 								 <div class="form-group">
                                 <label class="control-label col-md-3">Date of birth</label>
