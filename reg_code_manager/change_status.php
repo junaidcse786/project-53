@@ -14,10 +14,13 @@ if(isset($_SESSION["admin_panel"]) && isset($_POST['id'])){
 	$added_condition='';
 	
 	if($status=='started')
-		$added_condition = ", task_start_date=NOW()";
+		$added_condition = ", task_start_date=NOW(), task_end_date='0000-00-00 00:00:00'";
 
 	else if($status=='complete')
 		$added_condition = ", task_end_date=NOW()";
+
+	else
+		$added_condition = ", task_end_date='0000-00-00 00:00:00', task_start_date='0000-00-00 00:00:00'";
 	
 	$id.='0';
 	echo $sql="UPDATE ".$db_suffix.$table_name." SET ".$column_name."='$status' $added_condition WHERE ".$column_id." IN (".$id.")";	

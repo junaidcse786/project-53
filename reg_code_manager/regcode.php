@@ -81,6 +81,10 @@ else
                               <li><a href="#" data-toggle="modal" data-target="#confirmation_all"><i class="fa fa-trash"></i> Delete</a></li>
                               <li><a href="#" data-toggle="modal" data-status="1" data-target="#confirmation_status"><i class="fa fa-flag"></i> Change status to Active</a></li>
                               <li><a href="#" data-toggle="modal" data-status="0" data-target="#confirmation_status"><i class="fa fa-flag-o"></i> Change status to InActive</a></li>
+                              <li><a href="#" data-toggle="modal" data-status="not_started" data-target="#confirmation_state"><i class="fa fa-tasks"></i> Change state to "not_started"</a></li>
+                              <li><a href="#" data-toggle="modal" data-status="started" data-target="#confirmation_state"><i class="fa fa-tasks"></i> Change state to "started"</a></li>
+                              <li><a href="#" data-toggle="modal" data-status="complete" data-target="#confirmation_state"><i class="fa fa-tasks"></i> Change state to "complete"</a></li>
+                              
                               
                            </ul>
                         </div>
@@ -209,6 +213,26 @@ else
             <!-- /.modal-dialog -->
          </div>
 
+         <div class="modal fade" id="confirmation_state">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                     <h4 class="modal-title">State Change Confirmation</h4>
+                  </div>
+                  <div class="modal-body">
+                        <span class="font-red-thunderbird"><strong>Warning !</strong></span> Are you sure you want to change the status of the selected task(s)?
+				  </div>
+                  <div class="modal-footer">
+                     <button id="delete_button" type="button" class="btn red-thunderbird">Change</button>
+                     <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                  </div>
+               </div>
+               <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+         </div>  
+
 <!-----MODALS FOR THIS PAGE END ---->
   
 
@@ -314,7 +338,37 @@ else
 							   }								   		   		
 						  });
 					});
-				});
+            });
+            
+            $('#confirmation_state').on('show.bs.modal', function(e) {
+			
+               var status=$(e.relatedTarget).data('status');
+               
+               $(this).find('#delete_button').on('click', function(e) {
+
+                  var id='';
+               
+                  var table_name='task';
+                  
+                  var column_name='task_state';
+                  
+                  var column_id='task_id';		
+                  
+                  $('input:checkbox[class=checkboxes]:checked').each(function(){						 
+                     id=id+$(this).val()+',';
+                 })
+               
+                  $.ajax({
+                     type: "POST",
+                     url:  '<?php echo SITE_URL_ADMIN.'reg_code_manager/change_status.php' ; ?>',
+                     dataType: "text",
+                     data: {id: id, status: status, table_name:table_name, column_name:column_name, column_id:column_id},
+                     success: function(data){		
+                           window.location.reload(true);
+                     }								   		   		
+                  });
+               });
+            });
 	</script>	
     
     <!-----PAGE LEVEL SCRIPTS END--->    
