@@ -108,7 +108,7 @@ $user_query = mysqli_query($db,$user_sql);
 
                               <td><?php echo $row->user_branch; ?></td>
                               
-                              <td><?php echo date('d-m-Y h:i A',strtotime($row->user_creation_date ));?></td>
+                              <td><?php echo $row->user_creation_date;?></td>
 
                               <td>
                                  <?php if($row->user_status==1)
