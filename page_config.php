@@ -145,7 +145,7 @@ $menus = array(
 
 						   "configuration"  => "Configuration",
 
-						   "module"=>"Module" ,
+						   /* "module"=>"Module" , */
 
 						   "rollmodule" =>"User Roles",
 
